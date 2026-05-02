@@ -1,0 +1,12 @@
+title: Shuvo's Tech Blog
+description: Linux | DevOps | Automation
+baseurl: ""
+url: "https://shuvo-halder.github.io"
+
+theme: minima
+
+permalink: /blog/:title/
+
+plugins:
+  - jekyll-feed
+  - jekyll-seo-tag
