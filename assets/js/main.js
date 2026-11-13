@@ -10,6 +10,8 @@ document.addEventListener('DOMContentLoaded', () => {
   initHeroTerminal();
   initScrollReveal();
   initNavHighlight();
+  initScrollEffects();
+  initBackToTop();
   initPrivateProjectsToggle();
 });
 
@@ -253,16 +255,42 @@ function initHeroTerminal() {
 
 /**
  * Scroll Reveal Animations via IntersectionObserver
+ * Reveals headings, cards, and text blocks (opacity 0 -> 1, translateY 24px -> 0) over 600ms ease-out.
+ * Triggers when about 15% of the element is visible, and plays only once.
+ * Staggers grids (skills badges, project cards, cert cards, education items) by 70ms (capped at 500ms).
  */
 function initScrollReveal() {
-  const revealElements = document.querySelectorAll('.reveal-item');
-  if (!revealElements.length) return;
-
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const allRevealElements = document.querySelectorAll('.reveal-item');
+  if (!allRevealElements.length) return;
+
   if (prefersReducedMotion || !('IntersectionObserver' in window)) {
-    revealElements.forEach(el => el.classList.add('is-visible'));
+    allRevealElements.forEach(el => el.classList.add('is-visible'));
     return;
   }
+
+  // Configure staggered delays for grid items (70ms each, capped at 500ms)
+  const staggerSelectors = [
+    { container: '.skills-grid', items: '.skill-category-card' },
+    { container: '.skill-badges', items: '.skill-badge' },
+    { container: '#public-projects-grid', items: '.project-card' },
+    { container: '#private-projects-grid', items: '.project-card' },
+    { container: '.certs-grid', items: '.cert-card' },
+    { container: '.education-grid', items: '.education-card' },
+    { container: '.quick-facts-grid', items: '.fact-card' },
+    { container: '.secondary-skills-row', items: '.skill-badge' }
+  ];
+
+  staggerSelectors.forEach(({ container, items }) => {
+    const parentContainers = document.querySelectorAll(container);
+    parentContainers.forEach(parent => {
+      const children = parent.querySelectorAll(items);
+      children.forEach((child, index) => {
+        const delay = Math.min(index * 70, 500);
+        child.style.transitionDelay = `${delay}ms`;
+      });
+    });
+  });
 
   const observer = new IntersectionObserver((entries, obs) => {
     entries.forEach(entry => {
@@ -272,40 +300,144 @@ function initScrollReveal() {
       }
     });
   }, {
-    threshold: 0.1,
-    rootMargin: '0px 0px -40px 0px'
+    threshold: 0.15,
+    rootMargin: '0px 0px -20px 0px'
   });
 
-  revealElements.forEach(el => observer.observe(el));
+  allRevealElements.forEach(el => observer.observe(el));
 }
 
 /**
- * Active Navigation Link Highlighter based on scroll position
+ * Active Navigation Link Highlighter based on scroll position using IntersectionObserver
+ * Highlights active section with smooth underline and color transition.
+ * Works seamlessly in both desktop and mobile navigation menus.
  */
 function initNavHighlight() {
   const sections = document.querySelectorAll('section[id]');
   const navLinks = document.querySelectorAll('.nav-link[href^="#"]');
   if (!sections.length || !navLinks.length) return;
 
+  function setActive(id) {
+    navLinks.forEach(link => {
+      if (link.getAttribute('href') === `#${id}`) {
+        link.classList.add('active');
+      } else {
+        link.classList.remove('active');
+      }
+    });
+  }
+
   const observer = new IntersectionObserver((entries) => {
+    // If user has reached the bottom of the page, activate the last section (#contact)
+    const atBottom = (window.innerHeight + window.scrollY) >= (document.documentElement.scrollHeight - 60);
+    if (atBottom) {
+      setActive('contact');
+      return;
+    }
+
     entries.forEach(entry => {
       if (entry.isIntersecting) {
-        const id = entry.target.getAttribute('id');
-        navLinks.forEach(link => {
-          if (link.getAttribute('href') === `#${id}`) {
-            link.classList.add('active');
-          } else {
-            link.classList.remove('active');
-          }
-        });
+        setActive(entry.target.id);
       }
     });
   }, {
-    threshold: 0.2,
-    rootMargin: '-70px 0px -50% 0px'
+    threshold: 0.15,
+    rootMargin: '-70px 0px -55% 0px'
   });
 
   sections.forEach(sec => observer.observe(sec));
+}
+
+/**
+ * Unified Scroll Effects Listener (requestAnimationFrame-throttled, passive)
+ * Controls:
+ *  1. Top fixed 3px cyan scroll-progress bar (using transform: scaleX)
+ *  2. Navbar compacting past 40px
+ *  3. Experience timeline line drawing down as user scrolls through the section
+ *  4. Floating back-to-top button visibility past 600px
+ */
+function initScrollEffects() {
+  const progressBar = document.getElementById('scroll-progress');
+  const navbar = document.querySelector('.navbar');
+  const backToTopBtn = document.getElementById('back-to-top');
+  const timeline = document.querySelector('.timeline');
+
+  let ticking = false;
+
+  function update() {
+    const scrollY = window.scrollY || document.documentElement.scrollTop;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+
+    // 1. Top fixed 3px cyan scroll-progress bar
+    if (progressBar) {
+      const progress = docHeight > 0 ? Math.min(Math.max(scrollY / docHeight, 0), 1) : 0;
+      progressBar.style.transform = `scaleX(${progress})`;
+      progressBar.style.opacity = scrollY > 6 ? '1' : '0';
+    }
+
+    // 2. Navbar compacting past 40px
+    if (navbar) {
+      navbar.classList.toggle('scrolled', scrollY > 40);
+    }
+
+    // 3. Floating back-to-top button past 600px
+    if (backToTopBtn) {
+      backToTopBtn.classList.toggle('is-visible', scrollY > 600);
+    }
+
+    // 4. Experience timeline line drawing down
+    if (timeline) {
+      const rect = timeline.getBoundingClientRect();
+      const triggerPoint = window.innerHeight * 0.65;
+      const totalHeight = rect.height;
+      if (totalHeight > 0) {
+        const progress = Math.min(Math.max((triggerPoint - rect.top) / totalHeight, 0), 1);
+        timeline.style.setProperty('--timeline-progress', progress.toFixed(3));
+      }
+    }
+
+    ticking = false;
+  }
+
+  window.addEventListener('scroll', () => {
+    if (!ticking) {
+      window.requestAnimationFrame(update);
+      ticking = true;
+    }
+  }, { passive: true });
+
+  window.addEventListener('resize', () => {
+    if (!ticking) {
+      window.requestAnimationFrame(update);
+      ticking = true;
+    }
+  }, { passive: true });
+
+  // Initial update on load
+  update();
+}
+
+/**
+ * Floating Back-to-Top Button Handler
+ * Keyboard accessible, smoothly scrolls back to hero, respects prefers-reduced-motion.
+ */
+function initBackToTop() {
+  const btn = document.getElementById('back-to-top');
+  if (!btn) return;
+
+  btn.addEventListener('click', (e) => {
+    e.preventDefault();
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const heroSection = document.getElementById('hero');
+
+    if (heroSection) {
+      heroSection.scrollIntoView({ behavior: prefersReducedMotion ? 'auto' : 'smooth' });
+    } else {
+      window.scrollTo({ top: 0, behavior: prefersReducedMotion ? 'auto' : 'smooth' });
+    }
+
+    btn.blur();
+  });
 }
 
 /**
@@ -354,6 +486,9 @@ function initPrivateProjectsToggle() {
     const iconEl = toggleBtn.querySelector('.toggle-icon');
     if (iconEl) {
       iconEl.style.transform = isCollapsed ? 'rotate(0deg)' : 'rotate(180deg)';
+    }
+    if (!isCollapsed) {
+      privateGrid.querySelectorAll('.reveal-item').forEach(el => el.classList.add('is-visible'));
     }
   });
 }
