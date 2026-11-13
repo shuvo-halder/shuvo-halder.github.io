@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initTheme();
   initMobileNav();
   initTypingEffect();
+  initHeroTerminal();
   initScrollReveal();
   initNavHighlight();
 });
@@ -155,6 +156,98 @@ function initTypingEffect() {
 
   // Start typing after initial delay
   setTimeout(typeStep, 600);
+}
+
+/**
+ * Hero Terminal CLI Typer
+ * Simulates a sequential terminal command execution with output.
+ * Uses direct element references so each command and output appends cleanly.
+ * Respects prefers-reduced-motion by rendering full static output immediately.
+ */
+function initHeroTerminal() {
+  const container = document.getElementById('terminal-content');
+  if (!container) return;
+
+  const sequence = [
+    { cmd: 'whoami', output: 'Shuvo Halder' },
+    { cmd: 'cat role.txt', output: 'System &amp; Cloud Infrastructure Engineer' },
+    { cmd: 'ls skills/', output: '<span class="term-tag">openstack</span> <span class="term-tag">proxmox</span> <span class="term-tag">ceph</span> <span class="term-tag">kubernetes</span> <span class="term-tag">linux</span> <span class="term-tag">networking</span>' },
+    { cmd: 'uptime', output: 'Building reliable infrastructure since 2022' }
+  ];
+
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (prefersReducedMotion) {
+    let fullHtml = '';
+    sequence.forEach(item => {
+      fullHtml += `<div class="term-line"><span class="term-prompt">$</span> <span class="term-input">${item.cmd}</span></div>`;
+      fullHtml += `<div class="term-output">${item.output}</div>`;
+    });
+    fullHtml += `<div class="term-line"><span class="term-prompt">$</span> <span class="terminal-cursor-block"></span></div>`;
+    container.innerHTML = fullHtml;
+    return;
+  }
+
+  container.innerHTML = '';
+  let step = 0;
+
+  function runNextCommand() {
+    if (step >= sequence.length) {
+      // Final idle prompt with blinking block cursor
+      const finalPrompt = document.createElement('div');
+      finalPrompt.className = 'term-line';
+      finalPrompt.innerHTML = `<span class="term-prompt">$</span> <span class="terminal-cursor-block"></span>`;
+      container.appendChild(finalPrompt);
+      return;
+    }
+
+    const currentItem = sequence[step];
+    const lineEl = document.createElement('div');
+    lineEl.className = 'term-line';
+
+    const promptSpan = document.createElement('span');
+    promptSpan.className = 'term-prompt';
+    promptSpan.textContent = '$';
+
+    const inputSpan = document.createElement('span');
+    inputSpan.className = 'term-input';
+
+    const cursorSpan = document.createElement('span');
+    cursorSpan.className = 'terminal-cursor-block';
+
+    lineEl.appendChild(promptSpan);
+    lineEl.appendChild(document.createTextNode(' '));
+    lineEl.appendChild(inputSpan);
+    lineEl.appendChild(cursorSpan);
+    container.appendChild(lineEl);
+
+    let charIdx = 0;
+    function typeChar() {
+      if (charIdx < currentItem.cmd.length) {
+        inputSpan.textContent += currentItem.cmd[charIdx];
+        charIdx++;
+        setTimeout(typeChar, 35 + Math.random() * 20);
+      } else {
+        // Finished typing command: remove cursor from active line and append output
+        setTimeout(() => {
+          cursorSpan.remove();
+
+          const outputDiv = document.createElement('div');
+          outputDiv.className = 'term-output';
+          outputDiv.innerHTML = currentItem.output;
+          container.appendChild(outputDiv);
+
+          step++;
+          setTimeout(runNextCommand, 240);
+        }, 180);
+      }
+    }
+
+    typeChar();
+  }
+
+  // Initial delay before typing begins
+  setTimeout(runNextCommand, 400);
 }
 
 /**
