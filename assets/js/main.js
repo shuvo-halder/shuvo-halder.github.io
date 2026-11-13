@@ -110,15 +110,15 @@ function initTypingEffect() {
   if (!typedTarget) return;
 
   const roles = [
-    'System Engineer',
+    'System & Cloud Infrastructure Engineer',
     'DevOps Engineer',
-    'Cloud Infrastructure Engineer'
+    'OpenStack & Kubernetes Specialist'
   ];
 
   // Disable dynamic typing if user prefers reduced motion
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (prefersReducedMotion) {
-    typedTarget.textContent = 'System Engineer | DevOps | Cloud Infrastructure';
+    typedTarget.textContent = 'System & Cloud Infrastructure Engineer';
     return;
   }
 
@@ -133,21 +133,21 @@ function initTypingEffect() {
     if (isDeleting) {
       typedTarget.textContent = currentRole.substring(0, charIndex - 1);
       charIndex--;
-      typingSpeed = 50;
+      typingSpeed = 45;
     } else {
       typedTarget.textContent = currentRole.substring(0, charIndex + 1);
       charIndex++;
-      typingSpeed = 110;
+      typingSpeed = 100;
     }
 
     if (!isDeleting && charIndex === currentRole.length) {
       // Pause at full word
-      typingSpeed = 2000;
+      typingSpeed = 2200;
       isDeleting = true;
     } else if (isDeleting && charIndex === 0) {
       isDeleting = false;
       roleIndex = (roleIndex + 1) % roles.length;
-      typingSpeed = 400;
+      typingSpeed = 350;
     }
 
     setTimeout(typeStep, typingSpeed);
@@ -178,7 +178,7 @@ function initScrollReveal() {
       }
     });
   }, {
-    threshold: 0.12,
+    threshold: 0.1,
     rootMargin: '0px 0px -40px 0px'
   });
 
@@ -207,8 +207,8 @@ function initNavHighlight() {
       }
     });
   }, {
-    threshold: 0.25,
-    rootMargin: '-70px 0px -60% 0px'
+    threshold: 0.2,
+    rootMargin: '-70px 0px -50% 0px'
   });
 
   sections.forEach(sec => observer.observe(sec));
