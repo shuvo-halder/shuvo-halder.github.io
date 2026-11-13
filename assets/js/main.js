@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initHeroTerminal();
   initScrollReveal();
   initNavHighlight();
+  initPrivateProjectsToggle();
 });
 
 /**
@@ -306,3 +307,54 @@ function initNavHighlight() {
 
   sections.forEach(sec => observer.observe(sec));
 }
+
+/**
+ * Private Projects Mobile Collapse Toggle
+ * Collapses the private projects grid on mobile screens (<= 768px) to keep the section scannable.
+ * Supports accessible button interaction (aria-expanded, aria-controls) and handles viewport resizing.
+ */
+function initPrivateProjectsToggle() {
+  const toggleBtn = document.getElementById('toggle-private-projects');
+  const privateGrid = document.getElementById('private-projects-grid');
+  if (!toggleBtn || !privateGrid) return;
+
+  function updateCollapseState() {
+    if (window.innerWidth <= 768) {
+      if (!toggleBtn.dataset.userInteracted) {
+        privateGrid.classList.add('is-collapsed');
+        toggleBtn.setAttribute('aria-expanded', 'false');
+        const textEl = toggleBtn.querySelector('.toggle-text');
+        if (textEl) textEl.textContent = 'Show Production & Private Systems (5)';
+        const iconEl = toggleBtn.querySelector('.toggle-icon');
+        if (iconEl) iconEl.style.transform = 'rotate(0deg)';
+      }
+    } else {
+      privateGrid.classList.remove('is-collapsed');
+      toggleBtn.setAttribute('aria-expanded', 'true');
+    }
+  }
+
+  // Set initial state
+  updateCollapseState();
+
+  // Handle window resizing
+  window.addEventListener('resize', updateCollapseState);
+
+  // Toggle on click
+  toggleBtn.addEventListener('click', () => {
+    toggleBtn.dataset.userInteracted = 'true';
+    const isCollapsed = privateGrid.classList.toggle('is-collapsed');
+    toggleBtn.setAttribute('aria-expanded', String(!isCollapsed));
+    const textEl = toggleBtn.querySelector('.toggle-text');
+    if (textEl) {
+      textEl.textContent = isCollapsed 
+        ? 'Show Production & Private Systems (5)' 
+        : 'Hide Production & Private Systems';
+    }
+    const iconEl = toggleBtn.querySelector('.toggle-icon');
+    if (iconEl) {
+      iconEl.style.transform = isCollapsed ? 'rotate(0deg)' : 'rotate(180deg)';
+    }
+  });
+}
+

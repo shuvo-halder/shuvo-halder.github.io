@@ -1248,6 +1248,106 @@ button {
   border-radius: var(--radius-sm);
 }
 
+/* Projects Group Headers */
+.projects-group-header {
+  margin-bottom: 1.5rem;
+}
+
+.projects-group-header.group-b-header {
+  margin-top: 3.5rem;
+}
+
+.group-cli-label {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--accent);
+  margin-bottom: 0.45rem;
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.projects-group-title {
+  font-family: var(--font-heading);
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 0.35rem;
+}
+
+.projects-group-desc {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+}
+
+/* Group A Card Footer & CTA */
+.project-card-footer {
+  margin-top: 1.25rem;
+  padding-top: 0.9rem;
+  border-top: 1px dashed var(--border-color);
+  display: flex;
+  align-items: center;
+}
+
+.project-link-cta {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--accent);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  transition: all var(--transition-fast);
+}
+
+.project-link-cta svg {
+  width: 16px;
+  height: 16px;
+}
+
+.project-link-cta:hover {
+  color: var(--text-primary);
+  transform: translateX(3px);
+}
+
+/* View all repositories CTA */
+.projects-all-cta {
+  text-align: center;
+  margin-top: 2.25rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Private Projects Mobile Collapse Toggle */
+.private-toggle-wrapper {
+  display: none;
+  margin: 1.5rem 0 2rem;
+  justify-content: center;
+}
+
+.private-toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.private-toggle-btn .toggle-icon {
+  width: 16px;
+  height: 16px;
+  transition: transform var(--transition-fast);
+}
+
+@media (max-width: 768px) {
+  .private-toggle-wrapper {
+    display: flex;
+  }
+
+  #private-projects-grid.is-collapsed {
+    display: none !important;
+  }
+}
+
 .projects-notice {
   text-align: center;
   margin-top: 2.5rem;

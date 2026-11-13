@@ -453,33 +453,256 @@
           <p class="section-subtitle">Real-world systems, cloud infrastructure deployments, and automation tooling.</p>
         </header>
 
+        <!-- Group A: Open Source & Automation -->
+        <div class="projects-group-header reveal-item">
+          <div class="group-cli-label">
+            <span class="term-prompt-sym">$</span> <span class="term-cmd">git</span> <span class="term-subcmd">status</span> <span class="term-flag">--public</span>
+          </div>
+          <h3 class="projects-group-title">Open Source &amp; Automation</h3>
+          <p class="projects-group-desc">Public automation tooling, VPS management platforms, and operational scripts.</p>
+        </div>
+
         <div class="projects-grid">
-          <!-- Project 1: Performance Stats Tool (Real Link) -->
+          <!-- Card 1: core-panel -->
           <article class="project-card reveal-item delay-1">
             <div class="project-top">
               <svg class="project-folder-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
               </svg>
               <div class="project-links">
-                <a href="https://github.com/shuvo-halder/performance-stats" target="_blank" rel="noopener noreferrer" class="project-icon-link" aria-label="View Performance Stats Tool GitHub repository">
+                <a href="https://github.com/shuvo-halder/core-panel" target="_blank" rel="noopener noreferrer" class="project-icon-link" aria-label="View core-panel GitHub repository">
                   <svg fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                     <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
                   </svg>
                 </a>
               </div>
             </div>
-            <h3 class="project-title">Performance Stats Tool</h3>
+            <h3 class="project-title">core-panel</h3>
             <p class="project-description">
-              Real-time Bash performance tracking utility. Captures live CPU load, memory consumption, disk I/O metrics, and network traffic summaries directly within the Linux terminal without external dependencies.
+              Self-hosted, production-grade VPS management platform, lightweight and secure alternative to cPanel/CyberPanel/aaPanel with strict privilege separation.
+            </p>
+            <ul class="project-tech-list">
+              <li class="project-tech-item">Python</li>
+              <li class="project-tech-item">FastAPI</li>
+              <li class="project-tech-item">Linux</li>
+              <li class="project-tech-item">VPS Management</li>
+            </ul>
+            <div class="project-card-footer">
+              <a href="https://github.com/shuvo-halder/core-panel" target="_blank" rel="noopener noreferrer" class="project-link-cta">
+                <svg fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
+                </svg>
+                View on GitHub <span aria-hidden="true">&rarr;</span>
+              </a>
+            </div>
+          </article>
+
+          <!-- Card 2: virtualhost-automation -->
+          <article class="project-card reveal-item delay-2">
+            <div class="project-top">
+              <svg class="project-folder-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
+              </svg>
+              <div class="project-links">
+                <a href="https://github.com/shuvo-halder/virtualhost-automation" target="_blank" rel="noopener noreferrer" class="project-icon-link" aria-label="View virtualhost-automation GitHub repository">
+                  <svg fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
+                  </svg>
+                </a>
+              </div>
+            </div>
+            <h3 class="project-title">virtualhost-automation</h3>
+            <p class="project-description">
+              Production-grade virtual host manager for Apache and Nginx on Ubuntu/Debian with SSL/Let's Encrypt, HTTP-to-HTTPS redirect, and DNS configuration.
+            </p>
+            <ul class="project-tech-list">
+              <li class="project-tech-item">Shell</li>
+              <li class="project-tech-item">Nginx</li>
+              <li class="project-tech-item">Apache</li>
+              <li class="project-tech-item">Ubuntu/Debian</li>
+            </ul>
+            <div class="project-card-footer">
+              <a href="https://github.com/shuvo-halder/virtualhost-automation" target="_blank" rel="noopener noreferrer" class="project-link-cta">
+                <svg fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
+                </svg>
+                View on GitHub <span aria-hidden="true">&rarr;</span>
+              </a>
+            </div>
+          </article>
+
+          <!-- Card 3: certbot-smart-manager -->
+          <article class="project-card reveal-item delay-3">
+            <div class="project-top">
+              <svg class="project-folder-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
+              </svg>
+              <div class="project-links">
+                <a href="https://github.com/shuvo-halder/certbot-smart-manager" target="_blank" rel="noopener noreferrer" class="project-icon-link" aria-label="View certbot-smart-manager GitHub repository">
+                  <svg fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
+                  </svg>
+                </a>
+              </div>
+            </div>
+            <h3 class="project-title">certbot-smart-manager</h3>
+            <p class="project-description">
+              SSL certificate lifecycle management for Let's Encrypt / Certbot featuring automated renewals, systemd timers, backup/rollback, and multi-channel alerts.
+            </p>
+            <ul class="project-tech-list">
+              <li class="project-tech-item">Shell</li>
+              <li class="project-tech-item">Certbot</li>
+              <li class="project-tech-item">Let's Encrypt</li>
+              <li class="project-tech-item">Systemd</li>
+            </ul>
+            <div class="project-card-footer">
+              <a href="https://github.com/shuvo-halder/certbot-smart-manager" target="_blank" rel="noopener noreferrer" class="project-link-cta">
+                <svg fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
+                </svg>
+                View on GitHub <span aria-hidden="true">&rarr;</span>
+              </a>
+            </div>
+          </article>
+
+          <!-- Card 4: nginx-inspector -->
+          <article class="project-card reveal-item delay-1">
+            <div class="project-top">
+              <svg class="project-folder-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
+              </svg>
+              <div class="project-links">
+                <a href="https://github.com/shuvo-halder/nginx-inspector" target="_blank" rel="noopener noreferrer" class="project-icon-link" aria-label="View nginx-inspector GitHub repository">
+                  <svg fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
+                  </svg>
+                </a>
+              </div>
+            </div>
+            <h3 class="project-title">nginx-inspector</h3>
+            <p class="project-description">
+              Advanced Nginx log analyzer with web dashboard and REST API for real-time traffic analysis, security auditing, and status metric visualization.
+            </p>
+            <ul class="project-tech-list">
+              <li class="project-tech-item">JavaScript</li>
+              <li class="project-tech-item">Python / Flask</li>
+              <li class="project-tech-item">Nginx</li>
+              <li class="project-tech-item">REST API</li>
+            </ul>
+            <div class="project-card-footer">
+              <a href="https://github.com/shuvo-halder/nginx-inspector" target="_blank" rel="noopener noreferrer" class="project-link-cta">
+                <svg fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
+                </svg>
+                View on GitHub <span aria-hidden="true">&rarr;</span>
+              </a>
+            </div>
+          </article>
+
+          <!-- Card 5: log-archive-tool -->
+          <article class="project-card reveal-item delay-2">
+            <div class="project-top">
+              <svg class="project-folder-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
+              </svg>
+              <div class="project-links">
+                <a href="https://github.com/shuvo-halder/log-archive-tool" target="_blank" rel="noopener noreferrer" class="project-icon-link" aria-label="View log-archive-tool GitHub repository">
+                  <svg fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
+                  </svg>
+                </a>
+              </div>
+            </div>
+            <h3 class="project-title">log-archive-tool</h3>
+            <p class="project-description">
+              Bash log archiving with compression, integrity checks, structured logging, automated cleanup, and remote backup support.
+            </p>
+            <ul class="project-tech-list">
+              <li class="project-tech-item">Shell</li>
+              <li class="project-tech-item">Bash</li>
+              <li class="project-tech-item">Log Archiving</li>
+              <li class="project-tech-item">Linux</li>
+            </ul>
+            <div class="project-card-footer">
+              <a href="https://github.com/shuvo-halder/log-archive-tool" target="_blank" rel="noopener noreferrer" class="project-link-cta">
+                <svg fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
+                </svg>
+                View on GitHub <span aria-hidden="true">&rarr;</span>
+              </a>
+            </div>
+          </article>
+
+          <!-- Card 6: performance-stats -->
+          <article class="project-card reveal-item delay-3">
+            <div class="project-top">
+              <svg class="project-folder-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
+              </svg>
+              <div class="project-links">
+                <a href="https://github.com/shuvo-halder/performance-stats" target="_blank" rel="noopener noreferrer" class="project-icon-link" aria-label="View performance-stats GitHub repository">
+                  <svg fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
+                  </svg>
+                </a>
+              </div>
+            </div>
+            <h3 class="project-title">performance-stats</h3>
+            <p class="project-description">
+              Real-time Bash performance tracking utility capturing CPU load, memory, disk I/O, network metrics, and security health directly in the Linux terminal.
             </p>
             <ul class="project-tech-list">
               <li class="project-tech-item">Bash</li>
+              <li class="project-tech-item">Python</li>
               <li class="project-tech-item">Linux</li>
+              <li class="project-tech-item">Monitoring</li>
             </ul>
+            <div class="project-card-footer">
+              <a href="https://github.com/shuvo-halder/performance-stats" target="_blank" rel="noopener noreferrer" class="project-link-cta">
+                <svg fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
+                </svg>
+                View on GitHub <span aria-hidden="true">&rarr;</span>
+              </a>
+            </div>
           </article>
+        </div>
 
-          <!-- Project 2: Internal Enterprise Cloud for Multiple Departments -->
-          <article class="project-card reveal-item delay-2">
+        <!-- "View all repositories on GitHub →" CTA button -->
+        <div class="projects-all-cta reveal-item">
+          <a href="https://github.com/shuvo-halder?tab=repositories" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">
+            <svg class="btn-icon" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
+            </svg>
+            View all repositories on GitHub &rarr;
+          </a>
+        </div>
+
+        <!-- Group B: Production & Private Systems -->
+        <div class="projects-group-header group-b-header reveal-item">
+          <div class="group-cli-label">
+            <span class="term-prompt-sym">$</span> <span class="term-cmd">ls</span> <span class="term-path">/infra/private-systems</span>
+          </div>
+          <h3 class="projects-group-title">Production &amp; Private Systems</h3>
+          <p class="projects-group-desc">Enterprise infrastructure, campus networks, and business platforms built in production environments.</p>
+        </div>
+
+        <!-- Mobile Toggle Button for Group B -->
+        <div class="private-toggle-wrapper">
+          <button type="button" class="btn btn-secondary private-toggle-btn" id="toggle-private-projects" aria-expanded="false" aria-controls="private-projects-grid">
+            <svg class="btn-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+            </svg>
+            <span class="toggle-text">Show Production &amp; Private Systems (5)</span>
+            <svg class="toggle-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+        </div>
+
+        <div class="projects-grid" id="private-projects-grid">
+          <!-- Project B1: Internal Enterprise Cloud -->
+          <article class="project-card reveal-item delay-1">
             <div class="project-top">
               <svg class="project-folder-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
@@ -503,8 +726,8 @@
             </ul>
           </article>
 
-          <!-- Project 3: Campus Network Infrastructure Design -->
-          <article class="project-card reveal-item delay-3">
+          <!-- Project B2: Campus Network Infrastructure -->
+          <article class="project-card reveal-item delay-2">
             <div class="project-top">
               <svg class="project-folder-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
@@ -528,8 +751,8 @@
             </ul>
           </article>
 
-          <!-- Project 4: Secure Mail Server -->
-          <article class="project-card reveal-item delay-1">
+          <!-- Project B3: Secure Mail Server -->
+          <article class="project-card reveal-item delay-3">
             <div class="project-top">
               <svg class="project-folder-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
@@ -552,8 +775,8 @@
             </ul>
           </article>
 
-          <!-- Project 5: CRM & Inventory Management System -->
-          <article class="project-card reveal-item delay-2">
+          <!-- Project B4: CRM & Inventory Management -->
+          <article class="project-card reveal-item delay-1">
             <div class="project-top">
               <svg class="project-folder-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
@@ -576,8 +799,8 @@
             </ul>
           </article>
 
-          <!-- Project 6: POS and E-Commerce Systems -->
-          <article class="project-card reveal-item delay-3">
+          <!-- Project B5: POS & E-Commerce Systems -->
+          <article class="project-card reveal-item delay-2">
             <div class="project-top">
               <svg class="project-folder-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
