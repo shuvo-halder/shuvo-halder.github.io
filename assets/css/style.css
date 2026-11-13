@@ -130,7 +130,7 @@ button {
 /* --- Container & Section Layout --- */
 .container {
   width: 100%;
-  max-width: 1100px;
+  max-width: 1200px;
   margin-left: auto;
   margin-right: auto;
   padding-left: 1.5rem;
@@ -411,17 +411,18 @@ button {
 
 /* --- Hero Section --- */
 .hero-section {
-  padding: 5rem 0 4rem;
-  min-height: calc(100vh - 120px);
+  padding: 3.5rem 0 3rem;
+  min-height: calc(100vh - 80px);
   display: flex;
   align-items: center;
 }
 
 .hero-grid {
   display: grid;
-  grid-template-columns: 1.25fr 0.75fr;
+  grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
   gap: 3.5rem;
+  width: 100%;
 }
 
 .hero-prefix {
@@ -513,9 +514,10 @@ button {
   border: 1px solid var(--term-border);
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-lg), 0 0 25px rgba(var(--accent-rgb), 0.12);
-  margin: 1.5rem 0 2rem;
+  margin: 1.25rem 0 1.5rem;
   overflow: hidden;
-  max-width: 580px;
+  max-width: 560px;
+  width: 100%;
   font-family: var(--font-mono);
   transition: all var(--transition-normal);
 }
@@ -525,7 +527,7 @@ button {
   align-items: center;
   justify-content: space-between;
   background: var(--term-titlebar-bg);
-  padding: 0.65rem 1rem;
+  padding: 0.55rem 0.9rem;
   border-bottom: 1px solid var(--term-border);
   user-select: none;
 }
@@ -565,10 +567,10 @@ button {
 }
 
 .terminal-body {
-  padding: 1.15rem 1.25rem 1.35rem;
-  min-height: 185px;
-  font-size: 0.88rem;
-  line-height: 1.7;
+  padding: 0.95rem 1.15rem 1.15rem;
+  min-height: 165px;
+  font-size: 0.84rem;
+  line-height: 1.6;
 }
 
 .terminal-content {
@@ -647,42 +649,50 @@ button {
   justify-content: center;
   align-items: center;
   position: relative;
+  flex-shrink: 0;
 }
 
 .avatar-frame {
   position: relative;
-  width: 240px;
-  height: 240px;
+  width: clamp(300px, 32vw, 440px);
+  aspect-ratio: 4 / 5;
+  height: auto;
+  flex-shrink: 0;
+  border-radius: var(--radius-lg);
 }
 
 .avatar-backdrop {
   position: absolute;
-  inset: -8px;
-  border-radius: var(--radius-full);
+  inset: -12px;
+  border-radius: var(--radius-lg);
   background: linear-gradient(135deg, var(--accent), #3b82f6);
-  opacity: 0.35;
-  filter: blur(14px);
+  opacity: 0.28;
+  filter: blur(22px);
   z-index: 1;
+  pointer-events: none;
 }
 
 .avatar-img-container {
   position: relative;
   width: 100%;
   height: 100%;
-  border-radius: var(--radius-full);
-  padding: 4px;
-  background: linear-gradient(135deg, var(--accent), var(--border-color));
+  border-radius: var(--radius-lg);
+  padding: 3px;
+  background: linear-gradient(135deg, rgba(var(--accent-rgb), 0.7), var(--border-color));
   z-index: 2;
-  box-shadow: var(--shadow-lg);
+  box-shadow: var(--shadow-lg), 0 0 30px rgba(var(--accent-rgb), 0.2);
   overflow: hidden;
 }
 
 .avatar-img {
   width: 100%;
   height: 100%;
+  aspect-ratio: 4 / 5;
   object-fit: cover;
-  border-radius: var(--radius-full);
+  object-position: center top;
+  border-radius: calc(var(--radius-lg) - 3px);
   background-color: var(--bg-secondary);
+  display: block;
 }
 
 /* --- Buttons --- */
@@ -1743,20 +1753,48 @@ button {
 .delay-4 { transition-delay: 0.4s; }
 
 /* --- Responsive Media Queries --- */
-@media (max-width: 868px) {
+@media (max-width: 899px) {
+  .hero-section {
+    padding: 3.5rem 0 2.5rem;
+    min-height: auto;
+  }
+
   .hero-grid {
     grid-template-columns: 1fr;
     text-align: center;
-    gap: 2.5rem;
+    gap: 2.25rem;
   }
 
   .hero-visual {
     order: -1;
+    margin: 0 auto;
   }
 
   .avatar-frame {
     width: 200px;
     height: 200px;
+    aspect-ratio: 1 / 1;
+    border-radius: var(--radius-full);
+  }
+
+  .avatar-backdrop {
+    inset: -8px;
+    border-radius: var(--radius-full);
+    filter: blur(14px);
+    opacity: 0.35;
+  }
+
+  .avatar-img-container {
+    border-radius: var(--radius-full);
+    padding: 4px;
+    background: linear-gradient(135deg, var(--accent), var(--border-color));
+    box-shadow: var(--shadow-lg);
+  }
+
+  .avatar-img {
+    border-radius: var(--radius-full);
+    aspect-ratio: 1 / 1;
+    object-position: center top;
   }
 
   .hero-title {
