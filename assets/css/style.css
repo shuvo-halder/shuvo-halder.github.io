@@ -46,6 +46,15 @@
   --transition-fast: 0.15s ease;
   --transition-normal: 0.25s ease;
   --transition-smooth: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* Unified Section Spacing System */
+  --section-space: clamp(48px, 7vw, 88px);
+}
+
+@media (max-width: 640px) {
+  :root {
+    --section-space: 48px;
+  }
 }
 
 [data-theme="light"] {
@@ -88,8 +97,12 @@
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 80px;
+  scroll-padding-top: 78px;
   -webkit-text-size-adjust: 100%;
+}
+
+section[id] {
+  scroll-margin-top: 78px;
 }
 
 body {
@@ -140,12 +153,17 @@ button {
 }
 
 .section {
-  padding: 5rem 0;
+  padding-block: calc(var(--section-space) / 2);
+  margin: 0;
   position: relative;
 }
 
+#contact {
+  padding-bottom: calc(var(--section-space) / 4);
+}
+
 .section-header {
-  margin-bottom: 2.75rem;
+  margin-bottom: clamp(24px, 3vw, 36px);
 }
 
 .section-tag {
@@ -158,7 +176,7 @@ button {
   border: 1px solid var(--accent-border);
   padding: 0.25rem 0.75rem;
   border-radius: var(--radius-sm);
-  margin-bottom: 0.75rem;
+  margin-bottom: 8px;
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
@@ -171,6 +189,11 @@ button {
   display: flex;
   align-items: center;
   gap: 0.75rem;
+  margin-bottom: 0;
+}
+
+.section-title:not(:last-child) {
+  margin-bottom: 12px;
 }
 
 .section-title::after {
@@ -184,7 +207,8 @@ button {
 .section-subtitle {
   color: var(--text-secondary);
   font-size: 1.05rem;
-  margin-top: 0.5rem;
+  margin-top: 0;
+  margin-bottom: 0;
   max-width: 700px;
 }
 
@@ -455,8 +479,8 @@ button {
 
 /* --- Hero Section --- */
 .hero-section {
-  padding: 3.5rem 0 3rem;
-  min-height: calc(100vh - 80px);
+  padding: 2.5rem 0 0;
+  min-height: calc(100svh - 70px);
   display: flex;
   align-items: center;
 }
@@ -895,7 +919,7 @@ button {
 .skills-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 1.5rem;
+  gap: 18px;
 }
 
 .skill-category-card {
@@ -975,7 +999,7 @@ button {
 .skill-badges {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
+  gap: 10px;
 }
 
 .skill-badge {
@@ -1001,7 +1025,7 @@ button {
 
 /* Secondary Skills Row */
 .secondary-skills-row {
-  margin-top: 2rem;
+  margin-top: 1.5rem;
   padding: 1.25rem 1.5rem;
   background: var(--bg-card);
   border: 1px dashed var(--border-color);
@@ -1009,7 +1033,7 @@ button {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  gap: 0.75rem;
+  gap: 10px;
 }
 
 .secondary-skills-label {
@@ -1217,7 +1241,7 @@ button {
 .projects-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 1rem;
+  gap: 18px;
   align-items: stretch;
 }
 
@@ -1518,24 +1542,12 @@ button {
   margin-left: auto;
   margin-right: auto;
 }
-  text-align: center;
-  margin-top: 2.5rem;
-  font-size: 0.95rem;
-  color: var(--text-secondary);
-  padding: 1rem 1.5rem;
-  background: var(--bg-card);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-md);
-  max-width: 650px;
-  margin-left: auto;
-  margin-right: auto;
-}
 
 /* --- Certifications Badge Grid --- */
 .cert-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 1.5rem;
+  gap: 18px;
 }
 
 .cert-card {
@@ -1594,7 +1606,7 @@ button {
 .education-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 1.5rem;
+  gap: 18px;
 }
 
 .education-card {
@@ -1637,8 +1649,8 @@ button {
 .profile-meta-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 1.5rem;
-  margin-top: 2.5rem;
+  gap: 18px;
+  margin-top: 1.75rem;
 }
 
 .profile-meta-card {
@@ -1661,7 +1673,7 @@ button {
 .meta-tags {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
+  gap: 10px;
 }
 
 .meta-tag {
@@ -1773,7 +1785,7 @@ button {
 
 /* --- Footer --- */
 .footer {
-  padding: 2.25rem 0;
+  padding: 1.5rem 0;
   border-top: 1px solid var(--border-color);
   background: var(--bg-secondary);
   color: var(--text-muted);
@@ -1936,7 +1948,7 @@ html.js .secondary-skills-row.is-visible .skill-badge {
 /* --- Responsive Media Queries --- */
 @media (max-width: 899px) {
   .hero-section {
-    padding: 3.5rem 0 2.5rem;
+    padding: 2.25rem 0 calc(var(--section-space) / 2);
     min-height: auto;
   }
 
@@ -2067,10 +2079,6 @@ html.js .secondary-skills-row.is-visible .skill-badge {
 
   .nav-toggle-btn.open .hamburger-line:nth-child(3) {
     transform: translateY(-7px) rotate(-45deg);
-  }
-
-  .section {
-    padding: 3.5rem 0;
   }
 
   .hero-title {
