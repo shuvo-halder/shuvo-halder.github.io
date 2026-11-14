@@ -21,10 +21,16 @@ Live URL: [https://shuvo-halder.github.io/](https://shuvo-halder.github.io/)
 ```text
 shuvo-halder.github.io/
 ├── .nojekyll                   # Disables Jekyll processing on GitHub Pages
-├── 404.html                    # Themed 404 error page
-├── favicon.svg                 # SVG terminal icon
+├── 404.html                    # Themed 404 error page (with noindex)
+├── apple-touch-icon.png        # 180x180 Apple touch icon
+├── favicon.svg                 # Scalable SVG terminal icon
+├── favicon-32x32.png           # 32x32 PNG favicon
+├── favicon-16x16.png           # 16x16 PNG favicon
 ├── index.html                  # Main one-page portfolio
 ├── README.md                   # Documentation & setup guide
+├── robots.txt                  # Search engine crawl directives
+├── sitemap.xml                 # XML sitemap with canonical URL
+├── site.webmanifest            # PWA/browser web app manifest
 ├── LICENSE                     # License file
 └── assets/
     ├── css/
@@ -32,8 +38,10 @@ shuvo-halder.github.io/
     ├── js/
     │   └── main.js             # Theme switcher, typing effect, mobile nav, animations
     └── images/
-        ├── placeholder-avatar.svg   # Vector avatar fallback
-        └── shuvo-halder.png         # Profile photo
+        ├── og-image.png        # 1200x630 Open Graph & Twitter social card
+        ├── placeholder-avatar.svg # Vector avatar fallback
+        ├── shuvo-halder.webp   # Optimized WebP hero portrait (12 KB)
+        └── shuvo-halder.png    # Original lossless PNG portrait fallback
 ```
 
 ---
@@ -89,3 +97,29 @@ This repository (`shuvo-halder.github.io`) is a **GitHub Pages User Site**, host
 ### 3. Global 404 Error Handling
 - The `404.html` in this repository handles unrouted requests at any path depth across the root user site (e.g. `https://shuvo-halder.github.io/non-existent-path`).
 - All scripts, stylesheets, and favicon links in `404.html` are strictly root-relative (`/assets/css/style.css`, `/assets/js/main.js`, `/favicon.svg`), guaranteeing styles, navigation, and theme toggling load accurately at any URL depth without redirect hacks or `<base>` tag conflicts.
+
+---
+
+## SEO & Search Engine Indexing
+
+This portfolio is optimized for search engines with pure static files, valid structured data (`Person` and `WebSite` JSON-LD schema), Open Graph and Twitter Card tags, and root crawl directives.
+
+### Submitting to Search Engines
+
+1. **Google Search Console**:
+   - Navigate to [Google Search Console](https://search.google.com/search-console).
+   - Add property: `https://shuvo-halder.github.io/` (URL prefix method is recommended for GitHub Pages).
+   - Verify ownership using the HTML tag or file upload method.
+   - Go to **Sitemaps** in the sidebar, enter `sitemap.xml`, and click **Submit**.
+   - Use the **URL Inspection** tool on `https://shuvo-halder.github.io/` and click **Request Indexing**.
+
+2. **Bing Webmaster Tools**:
+   - Go to [Bing Webmaster Tools](https://www.bing.com/webmasters).
+   - Sign in and either import your verified site from Google Search Console or add `https://shuvo-halder.github.io/` manually.
+   - Go to **Sitemaps**, enter `https://shuvo-halder.github.io/sitemap.xml`, and click **Submit sitemap**.
+
+### Key SEO Directives & Files
+- **Canonical URL**: `https://shuvo-halder.github.io/`
+- **Sitemap**: `https://shuvo-halder.github.io/sitemap.xml`
+- **Robots Directives (`robots.txt`)**: Allows crawling of all public pages and points crawlers directly to `sitemap.xml`.
+- **404 Handling (`404.html`)**: Includes `<meta name="robots" content="noindex">` to prevent error responses from being indexed by search engines.
