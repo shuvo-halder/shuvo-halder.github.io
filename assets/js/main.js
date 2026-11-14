@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initNavHighlight();
   initScrollEffects();
   initBackToTop();
+  initFooterYear();
   initPrivateProjectsToggle();
 });
 
@@ -174,8 +175,7 @@ function initHeroTerminal() {
   const sequence = [
     { cmd: 'whoami', output: 'Shuvo Halder' },
     { cmd: 'cat role.txt', output: 'System &amp; Cloud Infrastructure Engineer' },
-    { cmd: 'ls skills/', output: '<span class="term-tag">openstack</span> <span class="term-tag">proxmox</span> <span class="term-tag">ceph</span> <span class="term-tag">kubernetes</span> <span class="term-tag">linux</span> <span class="term-tag">networking</span>' },
-    { cmd: 'uptime', output: 'Building reliable infrastructure since 2022' }
+    { cmd: 'ls skills/', output: '<span class="term-tag">openstack</span> <span class="term-tag">proxmox</span> <span class="term-tag">ceph</span> <span class="term-tag">kubernetes</span> <span class="term-tag">linux</span> <span class="term-tag">networking</span>' }
   ];
 
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -491,5 +491,16 @@ function initPrivateProjectsToggle() {
       privateGrid.querySelectorAll('.reveal-item').forEach(el => el.classList.add('is-visible'));
     }
   });
+}
+
+/**
+ * Dynamic Footer Year
+ * Sets the current year dynamically, falling back to 2026 if JavaScript is unavailable.
+ */
+function initFooterYear() {
+  const yearEl = document.getElementById('footer-year');
+  if (yearEl) {
+    yearEl.textContent = new Date().getFullYear();
+  }
 }
 
