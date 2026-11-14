@@ -1,4 +1,3 @@
 User-agent: *
 Allow: /
-
 Sitemap: https://shuvo-halder.github.io/sitemap.xml
