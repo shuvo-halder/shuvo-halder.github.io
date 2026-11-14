@@ -13,6 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initScrollEffects();
   initBackToTop();
   initFooterYear();
+  init404Path();
   initPrivateProjectsToggle();
 });
 
@@ -502,5 +503,27 @@ function initFooterYear() {
   if (yearEl) {
     yearEl.textContent = new Date().getFullYear();
   }
+}
+
+/**
+ * 404 Error Page Path Display
+ * Inserts sanitized window.location.pathname with textContent only (no innerHTML),
+ * truncated if very long to prevent terminal layout overflow.
+ */
+function init404Path() {
+  const pathElements = document.querySelectorAll('.error-path');
+  if (!pathElements.length) return;
+
+  let pathname = window.location.pathname || '/requested-page';
+  
+  // Truncate if very long
+  const maxLen = 45;
+  if (pathname.length > maxLen) {
+    pathname = pathname.substring(0, maxLen - 3) + '...';
+  }
+
+  pathElements.forEach(el => {
+    el.textContent = pathname;
+  });
 }
 
