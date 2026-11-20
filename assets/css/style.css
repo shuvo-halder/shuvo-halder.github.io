@@ -539,10 +539,14 @@ button {
   color: var(--text-secondary);
   display: flex;
   align-items: center;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   gap: 0.35rem;
+  height: 2.2rem;
   min-height: 2.2rem;
+  max-height: 2.2rem;
+  overflow: hidden;
   margin-bottom: 1.25rem;
+  white-space: nowrap;
 }
 
 .hero-role-typed {
@@ -646,7 +650,7 @@ button {
 }
 
 .terminal-content {
-  color: var(--term-text);
+  color: #c9d1d9;
   user-select: text;
 }
 
@@ -662,14 +666,21 @@ button {
   margin-top: 0;
 }
 
+/* Terminal: all text uses fixed dark-terminal colors regardless of light/dark theme */
+.terminal-content,
+.terminal-body .term-line,
+.terminal-body .client-info-line {
+  color: #c9d1d9;
+}
+
 .term-prompt {
-  color: var(--accent);
+  color: #58d6e8;
   font-weight: 700;
   user-select: none;
 }
 
 .term-input {
-  color: var(--text-primary);
+  color: #e2e8f0;
   font-weight: 600;
 }
 
@@ -690,7 +701,7 @@ button {
 }
 
 .term-key {
-  color: var(--accent);
+  color: #58d6e8;
   font-weight: 600;
   display: inline-block;
   min-width: 78px;
@@ -699,24 +710,24 @@ button {
 }
 
 .term-sep {
-  color: var(--text-muted);
+  color: #6b7c93;
   margin-right: 0.45rem;
   flex-shrink: 0;
   user-select: none;
 }
 
 .term-val {
-  color: var(--text-primary);
+  color: #c9d1d9;
   word-break: break-word;
 }
 
 .term-val-accent {
-  color: var(--accent-light);
+  color: #79e8f5;
   font-weight: 600;
 }
 
 .term-output {
-  color: var(--text-secondary);
+  color: #8b96a7;
   padding-left: 1.1rem;
   margin-bottom: 0.5rem;
   word-break: break-word;
@@ -2412,6 +2423,13 @@ html.js .secondary-skills-row.is-visible .skill-badge {
 
   .hero-title {
     font-size: 2.2rem;
+  }
+
+  .hero-role-wrapper {
+    font-size: 1rem;
+    height: 1.9rem;
+    min-height: 1.9rem;
+    max-height: 1.9rem;
   }
 
   .skills-grid {
