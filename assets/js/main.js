@@ -8,9 +8,9 @@
  */
 const DEVTO_CONFIG = {
   username: 'shuvo_h',
-  count: 6,
-  apiTimeoutMs: 5000,
-  cacheTtlMs: 30 * 60 * 1000 // 30 minutes
+  count: 8,
+  apiTimeoutMs: 10000,
+  cacheTtlMs: 5 * 60 * 1000 // 5 minutes (stale-while-revalidate keeps it fresh)
 };
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -584,7 +584,7 @@ async function initArticles() {
   }
 
   // Helper to render skeleton loader cards during fetch
-  function renderSkeleton(count = 3) {
+  function renderSkeleton(count = 4) {
     grid.innerHTML = '';
     for (let i = 0; i < count; i++) {
       const skel = document.createElement('div');
@@ -779,36 +779,36 @@ async function initArticles() {
     }
   }
 
-  // 1. Check sessionStorage cache
+  let hasRenderedFromCache = false;
+
+  // 1. Check sessionStorage cache for instant display (stale-while-revalidate)
   try {
     const cachedRaw = sessionStorage.getItem(CACHE_KEY);
     if (cachedRaw) {
       const cached = JSON.parse(cachedRaw);
-      if (cached && cached.timestamp && (Date.now() - cached.timestamp < DEVTO_CONFIG.cacheTtlMs) && Array.isArray(cached.articles)) {
-        if (cached.articles.length > 0) {
-          renderArticles(cached.articles);
-          return;
-        } else {
-          hideSection();
-          return;
-        }
+      if (cached && Array.isArray(cached.articles) && cached.articles.length > 0) {
+        renderArticles(cached.articles);
+        hasRenderedFromCache = true;
       }
     }
   } catch (err) {
     // Ignore cache retrieval errors
   }
 
-  // 2. Fetch from dev.to API with 5-second timeout and skeleton loader
-  renderSkeleton(Math.min(DEVTO_CONFIG.count, 3));
-  articlesSection.removeAttribute('hidden'); // Reserve space during loading
+  // If nothing is rendered yet, show skeleton cards while fetching
+  if (!hasRenderedFromCache) {
+    renderSkeleton(Math.min(DEVTO_CONFIG.count, 4));
+    articlesSection.removeAttribute('hidden');
+  }
 
+  // 2. Fetch fresh articles from dev.to API with cache-busting
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), DEVTO_CONFIG.apiTimeoutMs);
 
-  const apiUrl = `https://dev.to/api/articles?username=${encodeURIComponent(DEVTO_CONFIG.username)}&per_page=${DEVTO_CONFIG.count}`;
+  const apiUrl = `https://dev.to/api/articles?username=${encodeURIComponent(DEVTO_CONFIG.username)}&per_page=${DEVTO_CONFIG.count}&_t=${Date.now()}`;
 
   try {
-    const response = await fetch(apiUrl, { signal: controller.signal });
+    const response = await fetch(apiUrl, { signal: controller.signal, cache: 'no-cache' });
     clearTimeout(timeoutId);
 
     if (!response.ok) {
@@ -821,25 +821,34 @@ async function initArticles() {
       throw new Error('dev.to API response is not an array');
     }
 
-    // Cache the response
+    // Sort by latest published date descending
+    data.sort((a, b) => new Date(b.published_at || 0) - new Date(a.published_at || 0));
+
+    const latestArticles = data.slice(0, DEVTO_CONFIG.count);
+
+    // Cache the fresh response
     try {
       sessionStorage.setItem(CACHE_KEY, JSON.stringify({
         timestamp: Date.now(),
-        articles: data
+        articles: latestArticles
       }));
     } catch (e) {
       // Ignore quota errors
     }
 
-    if (data.length === 0) {
-      hideSection();
+    if (latestArticles.length === 0) {
+      if (!hasRenderedFromCache) {
+        hideSection();
+      }
     } else {
-      renderArticles(data);
+      renderArticles(latestArticles);
     }
   } catch (err) {
     clearTimeout(timeoutId);
     console.warn('dev.to articles fetch failed or timed out:', err.message || err);
-    hideSection();
+    if (!hasRenderedFromCache) {
+      hideSection();
+    }
   }
 }
 
