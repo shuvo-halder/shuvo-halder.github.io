@@ -636,9 +636,13 @@ button {
 
 .terminal-body {
   padding: 0.95rem 1.15rem 1.15rem;
-  min-height: 135px;
+  height: 215px;
+  min-height: 215px;
+  max-height: 215px;
+  box-sizing: border-box;
+  overflow: hidden;
   font-size: 0.84rem;
-  line-height: 1.6;
+  line-height: 1.55;
 }
 
 .terminal-content {
@@ -656,6 +660,7 @@ button {
 
 .term-line:first-child {
   margin-top: 0;
+  margin-bottom: 0.45rem;
 }
 
 .term-prompt {
@@ -666,6 +671,44 @@ button {
 
 .term-input {
   color: var(--text-primary);
+  font-weight: 600;
+}
+
+/* Visitor Client Info Terminal Lines */
+.client-info-line {
+  display: flex;
+  align-items: baseline;
+  margin-bottom: 0.22rem;
+  line-height: 1.55;
+}
+
+.client-info-line:last-of-type {
+  margin-bottom: 0.45rem;
+}
+
+.term-key {
+  color: var(--accent);
+  font-weight: 600;
+  display: inline-block;
+  min-width: 78px;
+  flex-shrink: 0;
+  user-select: none;
+}
+
+.term-sep {
+  color: var(--text-muted);
+  margin-right: 0.45rem;
+  flex-shrink: 0;
+  user-select: none;
+}
+
+.term-val {
+  color: var(--text-primary);
+  word-break: break-word;
+}
+
+.term-val-accent {
+  color: var(--accent-light);
   font-weight: 600;
 }
 
@@ -2401,9 +2444,21 @@ html.js .secondary-skills-row.is-visible .skill-badge {
 
   .terminal-body {
     padding: 0.85rem 0.9rem 1rem;
-    min-height: 165px;
+    height: 195px;
+    min-height: 195px;
+    max-height: 195px;
+    box-sizing: border-box;
+    overflow: hidden;
     font-size: 0.78rem;
-    line-height: 1.55;
+    line-height: 1.5;
+  }
+
+  .term-key {
+    min-width: 68px;
+  }
+
+  .term-sep {
+    margin-right: 0.35rem;
   }
 
   .term-output {

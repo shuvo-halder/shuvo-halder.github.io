@@ -175,94 +175,278 @@ function initTypingEffect() {
 }
 
 /**
+ * Utility: HTML Escaping for Safe Terminal Rendering
+ */
+function escapeHtml(str) {
+  if (str === null || str === undefined) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
+/**
+ * Client Environment Detection (OS & Browser)
+ * Synchronously inspects navigator.userAgent for accurate platform info.
+ */
+function detectClientEnvironment() {
+  const ua = navigator.userAgent || '';
+  let os = 'Unknown OS';
+  let browser = 'Unknown Browser';
+
+  // Operating System
+  if (/Windows NT 10.0/i.test(ua)) os = 'Windows 10/11';
+  else if (/Windows NT 6.3/i.test(ua)) os = 'Windows 8.1';
+  else if (/Windows NT 6.2/i.test(ua)) os = 'Windows 8';
+  else if (/Windows NT 6.1/i.test(ua)) os = 'Windows 7';
+  else if (/Windows/i.test(ua)) os = 'Windows';
+  else if (/Android/i.test(ua)) {
+    const m = ua.match(/Android\s+([\d.]+)/i);
+    os = m ? `Android ${m[1]}` : 'Android';
+  } else if (/iPad/i.test(ua)) {
+    const m = ua.match(/OS\s+([\d_]+)/i);
+    os = m ? `iPadOS ${m[1].replace(/_/g, '.')}` : 'iPadOS';
+  } else if (/iPhone|iPod/i.test(ua)) {
+    const m = ua.match(/OS\s+([\d_]+)/i);
+    os = m ? `iOS ${m[1].replace(/_/g, '.')}` : 'iOS';
+  } else if (/Macintosh|Mac OS X/i.test(ua)) {
+    const m = ua.match(/Mac OS X\s+([\d_]+)/i);
+    os = m ? `macOS ${m[1].replace(/_/g, '.')}` : 'macOS';
+  } else if (/CrOS/i.test(ua)) {
+    os = 'ChromeOS';
+  } else if (/Ubuntu/i.test(ua)) {
+    os = 'Ubuntu Linux';
+  } else if (/Linux/i.test(ua)) {
+    os = 'Linux';
+  }
+
+  // Web Browser
+  if (/SamsungBrowser\/([\d.]+)/i.test(ua)) {
+    const m = ua.match(/SamsungBrowser\/([\d.]+)/i);
+    browser = `Samsung Internet ${m ? m[1].split('.')[0] : ''}`.trim();
+  } else if (/Edg\/([\d.]+)/i.test(ua)) {
+    const m = ua.match(/Edg\/([\d.]+)/i);
+    browser = `Edge ${m ? m[1].split('.')[0] : ''}`.trim();
+  } else if (/OPR\/([\d.]+)/i.test(ua) || /Opera\/([\d.]+)/i.test(ua)) {
+    const m = ua.match(/(?:OPR|Opera)\/([\d.]+)/i);
+    browser = `Opera ${m ? m[1].split('.')[0] : ''}`.trim();
+  } else if (/Chrome\/([\d.]+)/i.test(ua)) {
+    const m = ua.match(/Chrome\/([\d.]+)/i);
+    browser = `Chrome ${m ? m[1].split('.')[0] : ''}`.trim();
+  } else if (/Firefox\/([\d.]+)/i.test(ua)) {
+    const m = ua.match(/Firefox\/([\d.]+)/i);
+    browser = `Firefox ${m ? m[1].split('.')[0] : ''}`.trim();
+  } else if (/Version\/([\d.]+).*Safari/i.test(ua)) {
+    const m = ua.match(/Version\/([\d.]+)/i);
+    browser = `Safari ${m ? m[1].split('.')[0] : ''}`.trim();
+  }
+
+  return { os, browser };
+}
+
+/**
+ * Client Network Info Fetcher (IP, Location, ISP)
+ * Primary: https://ipwho.is/ (CORS-friendly, HTTPS, no API key).
+ * Fallback: https://ipinfo.io/json.
+ * Uses sessionStorage caching to ensure instantaneous load on subsequent pageviews.
+ */
+async function fetchClientNetworkInfo() {
+  const CACHE_KEY = 'sh_visitor_net_v1';
+  try {
+    const cached = sessionStorage.getItem(CACHE_KEY);
+    if (cached) {
+      const parsed = JSON.parse(cached);
+      // Valid for 15 minutes
+      if (parsed && parsed.data && (Date.now() - parsed.ts < 15 * 60 * 1000)) {
+        return parsed.data;
+      }
+    }
+  } catch (e) {
+    // Ignore sessionStorage errors (e.g. private mode restrictions)
+  }
+
+  // Primary API: ipwho.is
+  try {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 4000);
+    const res = await fetch('https://ipwho.is/', {
+      signal: controller.signal,
+      cache: 'no-cache'
+    });
+    clearTimeout(timeoutId);
+
+    if (res.ok) {
+      const data = await res.json();
+      if (data && data.success !== false) {
+        const locationParts = [data.city, data.country].filter(Boolean);
+        const result = {
+          ip: data.ip || 'Unavailable',
+          location: locationParts.length ? locationParts.join(', ') : 'Unavailable',
+          isp: data.connection?.isp || data.connection?.org || 'Unavailable'
+        };
+        try {
+          sessionStorage.setItem(CACHE_KEY, JSON.stringify({ data: result, ts: Date.now() }));
+        } catch (e) {}
+        return result;
+      }
+    }
+  } catch (err) {
+    // Primary failed or timed out; proceed to fallback
+  }
+
+  // Fallback API: ipinfo.io
+  try {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 3500);
+    const res = await fetch('https://ipinfo.io/json', {
+      signal: controller.signal,
+      cache: 'no-cache'
+    });
+    clearTimeout(timeoutId);
+
+    if (res.ok) {
+      const data = await res.json();
+      const locationParts = [data.city, data.country].filter(Boolean);
+      const cleanIsp = (data.org || '').replace(/^AS\d+\s*/i, '').trim();
+      const result = {
+        ip: data.ip || 'Unavailable',
+        location: locationParts.length ? locationParts.join(', ') : 'Unavailable',
+        isp: cleanIsp || data.org || 'Unavailable'
+      };
+      try {
+        sessionStorage.setItem(CACHE_KEY, JSON.stringify({ data: result, ts: Date.now() }));
+      } catch (e) {}
+      return result;
+    }
+  } catch (err) {
+    // Fallback failed
+  }
+
+  return {
+    ip: 'Unavailable',
+    location: 'Unavailable',
+    isp: 'Unavailable'
+  };
+}
+
+/**
  * Hero Terminal CLI Typer
- * Simulates a sequential terminal command execution with output.
- * Uses direct element references so each command and output appends cleanly.
- * Respects prefers-reduced-motion by rendering full static output immediately.
+ * Displays visitor inspection details: IP, Location, ISP, OS, and Browser.
+ * Terminal has a fixed height and width to prevent any layout shifts.
+ * Respects prefers-reduced-motion by rendering complete static output immediately.
  */
 function initHeroTerminal() {
   const container = document.getElementById('terminal-content');
   if (!container) return;
 
-  const sequence = [
-    { cmd: 'whoami', output: 'Shuvo Halder' },
-    { cmd: 'cat role.txt', output: 'System &amp; Cloud Infrastructure Engineer' },
-    { cmd: 'ls skills/', output: '<span class="term-tag">openstack</span> <span class="term-tag">proxmox</span> <span class="term-tag">ceph</span> <span class="term-tag">kubernetes</span> <span class="term-tag">linux</span> <span class="term-tag">networking</span>' }
-  ];
-
+  const srTextEl = document.getElementById('terminal-sr-text');
+  const env = detectClientEnvironment();
+  const netPromise = fetchClientNetworkInfo();
+  const cmd = 'curl -s https://ipwho.is/';
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+  function buildOutputLines(net) {
+    return [
+      { key: 'IP', val: net.ip, isAccent: true },
+      { key: 'Location', val: net.location, isAccent: false },
+      { key: 'ISP', val: net.isp, isAccent: false },
+      { key: 'OS', val: env.os, isAccent: false },
+      { key: 'Browser', val: env.browser, isAccent: false }
+    ];
+  }
+
+  function updateSrText(net) {
+    if (srTextEl) {
+      srTextEl.textContent = `Visitor client details: IP ${net.ip}, location ${net.location}, ISP ${net.isp}, OS ${env.os}, browser ${env.browser}.`;
+    }
+  }
+
+  // Reduced motion: render immediately without animation
   if (prefersReducedMotion) {
-    let fullHtml = '';
-    sequence.forEach(item => {
-      fullHtml += `<div class="term-line"><span class="term-prompt">$</span> <span class="term-input">${item.cmd}</span></div>`;
-      fullHtml += `<div class="term-output">${item.output}</div>`;
+    netPromise.then(net => {
+      const lines = buildOutputLines(net);
+      let html = `<div class="term-line"><span class="term-prompt">$</span> <span class="term-input">${escapeHtml(cmd)}</span></div>`;
+      lines.forEach(item => {
+        html += `<div class="client-info-line">` +
+          `<span class="term-key">${escapeHtml(item.key)}</span>` +
+          `<span class="term-sep">:</span>` +
+          `<span class="term-val${item.isAccent ? ' term-val-accent' : ''}">${escapeHtml(item.val)}</span>` +
+          `</div>`;
+      });
+      html += `<div class="term-line"><span class="term-prompt">$</span> <span class="terminal-cursor-block"></span></div>`;
+      container.innerHTML = html;
+      updateSrText(net);
     });
-    fullHtml += `<div class="term-line"><span class="term-prompt">$</span> <span class="terminal-cursor-block"></span></div>`;
-    container.innerHTML = fullHtml;
     return;
   }
 
+  // Animated typing sequence
   container.innerHTML = '';
-  let step = 0;
 
-  function runNextCommand() {
-    if (step >= sequence.length) {
-      // Final idle prompt with blinking block cursor
-      const finalPrompt = document.createElement('div');
-      finalPrompt.className = 'term-line';
-      finalPrompt.innerHTML = `<span class="term-prompt">$</span> <span class="terminal-cursor-block"></span>`;
-      container.appendChild(finalPrompt);
-      return;
+  const lineEl = document.createElement('div');
+  lineEl.className = 'term-line';
+
+  const promptSpan = document.createElement('span');
+  promptSpan.className = 'term-prompt';
+  promptSpan.textContent = '$';
+
+  const inputSpan = document.createElement('span');
+  inputSpan.className = 'term-input';
+
+  const cursorSpan = document.createElement('span');
+  cursorSpan.className = 'terminal-cursor-block';
+
+  lineEl.appendChild(promptSpan);
+  lineEl.appendChild(document.createTextNode(' '));
+  lineEl.appendChild(inputSpan);
+  lineEl.appendChild(cursorSpan);
+  container.appendChild(lineEl);
+
+  let charIdx = 0;
+  function typeChar() {
+    if (charIdx < cmd.length) {
+      inputSpan.textContent += cmd[charIdx];
+      charIdx++;
+      setTimeout(typeChar, 28 + Math.random() * 15);
+    } else {
+      // Command typing completed; remove active cursor and stream output
+      setTimeout(async () => {
+        cursorSpan.remove();
+        const net = await netPromise;
+        const lines = buildOutputLines(net);
+        updateSrText(net);
+
+        let lineIdx = 0;
+        function streamNextLine() {
+          if (lineIdx < lines.length) {
+            const item = lines[lineIdx];
+            const infoLine = document.createElement('div');
+            infoLine.className = 'client-info-line';
+            infoLine.innerHTML =
+              `<span class="term-key">${escapeHtml(item.key)}</span>` +
+              `<span class="term-sep">:</span>` +
+              `<span class="term-val${item.isAccent ? ' term-val-accent' : ''}">${escapeHtml(item.val)}</span>`;
+            container.appendChild(infoLine);
+            lineIdx++;
+            setTimeout(streamNextLine, 50);
+          } else {
+            // Append final prompt with blinking block cursor
+            const finalPrompt = document.createElement('div');
+            finalPrompt.className = 'term-line';
+            finalPrompt.innerHTML = `<span class="term-prompt">$</span> <span class="terminal-cursor-block"></span>`;
+            container.appendChild(finalPrompt);
+          }
+        }
+
+        streamNextLine();
+      }, 140);
     }
-
-    const currentItem = sequence[step];
-    const lineEl = document.createElement('div');
-    lineEl.className = 'term-line';
-
-    const promptSpan = document.createElement('span');
-    promptSpan.className = 'term-prompt';
-    promptSpan.textContent = '$';
-
-    const inputSpan = document.createElement('span');
-    inputSpan.className = 'term-input';
-
-    const cursorSpan = document.createElement('span');
-    cursorSpan.className = 'terminal-cursor-block';
-
-    lineEl.appendChild(promptSpan);
-    lineEl.appendChild(document.createTextNode(' '));
-    lineEl.appendChild(inputSpan);
-    lineEl.appendChild(cursorSpan);
-    container.appendChild(lineEl);
-
-    let charIdx = 0;
-    function typeChar() {
-      if (charIdx < currentItem.cmd.length) {
-        inputSpan.textContent += currentItem.cmd[charIdx];
-        charIdx++;
-        setTimeout(typeChar, 35 + Math.random() * 20);
-      } else {
-        // Finished typing command: remove cursor from active line and append output
-        setTimeout(() => {
-          cursorSpan.remove();
-
-          const outputDiv = document.createElement('div');
-          outputDiv.className = 'term-output';
-          outputDiv.innerHTML = currentItem.output;
-          container.appendChild(outputDiv);
-
-          step++;
-          setTimeout(runNextCommand, 240);
-        }, 180);
-      }
-    }
-
-    typeChar();
   }
 
-  // Initial delay before typing begins
-  setTimeout(runNextCommand, 400);
+  // Start typing after initial short delay
+  setTimeout(typeChar, 350);
 }
 
 /**
