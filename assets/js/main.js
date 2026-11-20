@@ -332,9 +332,10 @@ async function fetchClientNetworkInfo() {
 }
 
 /**
- * Hero Terminal CLI Typer
- * Displays visitor inspection details: IP, Location, ISP, OS, and Browser.
- * Terminal has a fixed height and width to prevent any layout shifts.
+ * Hero Terminal CLI Display
+ * Displays visitor client inspection details: IP, Location, ISP, OS, and Browser.
+ * Only the inspection results and prompt are displayed (no command string).
+ * Terminal dimensions remain strictly fixed to eliminate any layout shifts.
  * Respects prefers-reduced-motion by rendering complete static output immediately.
  */
 function initHeroTerminal() {
@@ -344,7 +345,6 @@ function initHeroTerminal() {
   const srTextEl = document.getElementById('terminal-sr-text');
   const env = detectClientEnvironment();
   const netPromise = fetchClientNetworkInfo();
-  const cmd = 'curl -s https://ipwho.is/';
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   function buildOutputLines(net) {
@@ -367,7 +367,7 @@ function initHeroTerminal() {
   if (prefersReducedMotion) {
     netPromise.then(net => {
       const lines = buildOutputLines(net);
-      let html = `<div class="term-line"><span class="term-prompt">$</span> <span class="term-input">${escapeHtml(cmd)}</span></div>`;
+      let html = '';
       lines.forEach(item => {
         html += `<div class="client-info-line">` +
           `<span class="term-key">${escapeHtml(item.key)}</span>` +
@@ -382,71 +382,38 @@ function initHeroTerminal() {
     return;
   }
 
-  // Animated typing sequence
-  container.innerHTML = '';
+  // Initial state: cursor prompt while awaiting network info
+  container.innerHTML = `<div class="term-line"><span class="term-prompt">$</span> <span class="terminal-cursor-block"></span></div>`;
 
-  const lineEl = document.createElement('div');
-  lineEl.className = 'term-line';
+  netPromise.then(net => {
+    const lines = buildOutputLines(net);
+    updateSrText(net);
+    container.innerHTML = '';
 
-  const promptSpan = document.createElement('span');
-  promptSpan.className = 'term-prompt';
-  promptSpan.textContent = '$';
-
-  const inputSpan = document.createElement('span');
-  inputSpan.className = 'term-input';
-
-  const cursorSpan = document.createElement('span');
-  cursorSpan.className = 'terminal-cursor-block';
-
-  lineEl.appendChild(promptSpan);
-  lineEl.appendChild(document.createTextNode(' '));
-  lineEl.appendChild(inputSpan);
-  lineEl.appendChild(cursorSpan);
-  container.appendChild(lineEl);
-
-  let charIdx = 0;
-  function typeChar() {
-    if (charIdx < cmd.length) {
-      inputSpan.textContent += cmd[charIdx];
-      charIdx++;
-      setTimeout(typeChar, 28 + Math.random() * 15);
-    } else {
-      // Command typing completed; remove active cursor and stream output
-      setTimeout(async () => {
-        cursorSpan.remove();
-        const net = await netPromise;
-        const lines = buildOutputLines(net);
-        updateSrText(net);
-
-        let lineIdx = 0;
-        function streamNextLine() {
-          if (lineIdx < lines.length) {
-            const item = lines[lineIdx];
-            const infoLine = document.createElement('div');
-            infoLine.className = 'client-info-line';
-            infoLine.innerHTML =
-              `<span class="term-key">${escapeHtml(item.key)}</span>` +
-              `<span class="term-sep">:</span>` +
-              `<span class="term-val${item.isAccent ? ' term-val-accent' : ''}">${escapeHtml(item.val)}</span>`;
-            container.appendChild(infoLine);
-            lineIdx++;
-            setTimeout(streamNextLine, 50);
-          } else {
-            // Append final prompt with blinking block cursor
-            const finalPrompt = document.createElement('div');
-            finalPrompt.className = 'term-line';
-            finalPrompt.innerHTML = `<span class="term-prompt">$</span> <span class="terminal-cursor-block"></span>`;
-            container.appendChild(finalPrompt);
-          }
-        }
-
-        streamNextLine();
-      }, 140);
+    let lineIdx = 0;
+    function streamNextLine() {
+      if (lineIdx < lines.length) {
+        const item = lines[lineIdx];
+        const infoLine = document.createElement('div');
+        infoLine.className = 'client-info-line';
+        infoLine.innerHTML =
+          `<span class="term-key">${escapeHtml(item.key)}</span>` +
+          `<span class="term-sep">:</span>` +
+          `<span class="term-val${item.isAccent ? ' term-val-accent' : ''}">${escapeHtml(item.val)}</span>`;
+        container.appendChild(infoLine);
+        lineIdx++;
+        setTimeout(streamNextLine, 65);
+      } else {
+        // Append final prompt with blinking block cursor
+        const finalPrompt = document.createElement('div');
+        finalPrompt.className = 'term-line';
+        finalPrompt.innerHTML = `<span class="term-prompt">$</span> <span class="terminal-cursor-block"></span>`;
+        container.appendChild(finalPrompt);
+      }
     }
-  }
 
-  // Start typing after initial short delay
-  setTimeout(typeChar, 350);
+    setTimeout(streamNextLine, 100);
+  });
 }
 
 /**
