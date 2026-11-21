@@ -127,7 +127,7 @@ function initTypingEffect() {
   if (!typedTarget) return;
 
   const roles = [
-    'System & Cloud Infrastructure Engineer',
+    'System & Cloud Infrastructure',
     'DevOps Engineer',
     'OpenStack & Kubernetes Specialist'
   ];
