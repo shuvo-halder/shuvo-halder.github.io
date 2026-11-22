@@ -500,6 +500,11 @@ button {
   display: none !important;
 }
 
+/* Service gig images: taller than the 120px project-card cap */
+.project-card img.service-image {
+  max-height: 180px;
+}
+
 @media (max-width: 768px) {
   .nav-dropdown {
     width: 100%;
@@ -507,14 +512,9 @@ button {
 
   .nav-dropdown-toggle {
     width: 100%;
-    justify-content: flex-start;
-    gap: 0.5rem;
+    justify-content: space-between;
     padding: 0.5rem 0;
     font-size: 1rem;
-  }
-
-  .nav-dropdown-toggle .nav-caret {
-    margin-left: auto;
   }
 
   .nav-dropdown-menu {
@@ -537,8 +537,6 @@ button {
 
   .nav-dropdown.open .nav-dropdown-menu {
     display: flex;
-    left: auto;
-    transform: none;
   }
 
   .nav-dropdown-item {
@@ -2524,9 +2522,9 @@ html.js .secondary-skills-row.is-visible .skill-badge {
     top: 70px;
     left: 0;
     right: 0;
-    background-color: var(--bg-primary);
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
+    background-color: var(--nav-bg);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
     border-bottom: 1px solid var(--border-color);
     flex-direction: column;
     padding: 2rem 1.5rem;
