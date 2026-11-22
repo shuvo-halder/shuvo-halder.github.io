@@ -371,6 +371,8 @@ button {
   align-items: center;
   list-style: none;
   gap: 1.35rem;
+  margin-left: auto;
+  margin-right: 1.5rem;
 }
 
 .nav-link {
@@ -473,6 +475,18 @@ button {
   visibility: visible;
   pointer-events: auto;
   transform: translate(-50%, 0);
+}
+
+.nav-dropdown:last-child .nav-dropdown-menu {
+  left: auto;
+  right: 0;
+  transform: translate(0, 6px);
+}
+
+.nav-dropdown:last-child:hover .nav-dropdown-menu,
+.nav-dropdown:last-child:focus-within .nav-dropdown-menu,
+.nav-dropdown:last-child.open .nav-dropdown-menu {
+  transform: translate(0, 0);
 }
 
 .nav-dropdown-item {
@@ -2517,6 +2531,8 @@ html.js .secondary-skills-row.is-visible .skill-badge {
     top: 70px;
     left: 0;
     right: 0;
+    margin-left: 0;
+    margin-right: 0;
     background-color: var(--nav-bg);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
