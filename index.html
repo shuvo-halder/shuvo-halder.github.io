@@ -144,15 +144,30 @@
 
       <!-- Desktop & Mobile Navigation Links -->
       <nav id="nav-menu" class="nav-menu" role="navigation" aria-label="Main Navigation">
-        <a href="#about" class="nav-link"><span>//</span>about</a>
-        <a href="#skills" class="nav-link"><span>//</span>skills</a>
-        <a href="#experience" class="nav-link"><span>//</span>experience</a>
-        <a href="#projects" class="nav-link"><span>//</span>projects</a>
-        <a href="#articles" id="nav-link-articles" class="nav-link nav-link-articles" hidden><span>//</span>articles</a>
-        <a href="#certifications" class="nav-link"><span>//</span>certifications</a>
-        <a href="#education" class="nav-link"><span>//</span>education</a>
-        <a href="/services.html" class="nav-link"><span>//</span>services</a>
-        <a href="#contact" class="nav-link"><span>//</span>contact</a>
+        <div class="nav-dropdown">
+          <button type="button" class="nav-link nav-dropdown-toggle" aria-expanded="false" aria-haspopup="true"><span>//</span>about <span class="nav-caret" aria-hidden="true">▾</span></button>
+          <div class="nav-dropdown-menu">
+          <a href="#about" class="nav-dropdown-item"><span>//</span>about</a>
+          <a href="#skills" class="nav-dropdown-item"><span>//</span>skills</a>
+          <a href="#education" class="nav-dropdown-item"><span>//</span>education</a>
+          <a href="#certifications" class="nav-dropdown-item"><span>//</span>certifications</a>
+          </div>
+        </div>
+        <div class="nav-dropdown">
+          <button type="button" class="nav-link nav-dropdown-toggle" aria-expanded="false" aria-haspopup="true"><span>//</span>work <span class="nav-caret" aria-hidden="true">▾</span></button>
+          <div class="nav-dropdown-menu">
+          <a href="#experience" class="nav-dropdown-item"><span>//</span>experience</a>
+          <a href="#projects" class="nav-dropdown-item"><span>//</span>projects</a>
+          <a href="#articles" class="nav-dropdown-item" id="nav-link-articles" hidden><span>//</span>articles</a>
+          </div>
+        </div>
+        <div class="nav-dropdown">
+          <button type="button" class="nav-link nav-dropdown-toggle" aria-expanded="false" aria-haspopup="true"><span>//</span>hire-me <span class="nav-caret" aria-hidden="true">▾</span></button>
+          <div class="nav-dropdown-menu">
+          <a href="/services.html" class="nav-dropdown-item"><span>//</span>services</a>
+          <a href="#contact" class="nav-dropdown-item"><span>//</span>contact</a>
+          </div>
+        </div>
       </nav>
 
       <!-- Nav Action Buttons -->

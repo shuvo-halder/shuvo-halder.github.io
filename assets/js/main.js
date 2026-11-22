@@ -16,6 +16,7 @@ const DEVTO_CONFIG = {
 document.addEventListener('DOMContentLoaded', () => {
   initTheme();
   initMobileNav();
+  initNavDropdowns();
   initTypingEffect();
   initHeroTerminal();
   initScrollReveal();
@@ -78,7 +79,7 @@ function initTheme() {
 function initMobileNav() {
   const toggleBtn = document.getElementById('nav-toggle');
   const navMenu = document.getElementById('nav-menu');
-  const navLinks = document.querySelectorAll('.nav-link');
+  const navLinks = document.querySelectorAll('.nav-dropdown-item');
 
   if (!toggleBtn || !navMenu) return;
 
@@ -115,6 +116,51 @@ function initMobileNav() {
       toggleMenu(false);
       toggleBtn.focus();
     }
+  });
+}
+
+
+/**
+ * Grouped Dropdown Navigation
+ * Desktop: opens on hover (CSS) and on click/tap; mobile: tap expands an accordion.
+ * Closes on outside click or Escape; item clicks close the dropdown.
+ */
+function initNavDropdowns() {
+  const dropdowns = document.querySelectorAll('.nav-dropdown');
+  if (!dropdowns.length) return;
+
+  function closeAll(except) {
+    dropdowns.forEach(dropdown => {
+      if (dropdown !== except) {
+        dropdown.classList.remove('open');
+        dropdown.querySelector('.nav-dropdown-toggle').setAttribute('aria-expanded', 'false');
+      }
+    });
+  }
+
+  dropdowns.forEach(dropdown => {
+    const toggle = dropdown.querySelector('.nav-dropdown-toggle');
+    if (!toggle) return;
+
+    toggle.addEventListener('click', (event) => {
+      event.stopPropagation();
+      const willOpen = !dropdown.classList.contains('open');
+      closeAll(dropdown);
+      dropdown.classList.toggle('open', willOpen);
+      toggle.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
+    });
+
+    dropdown.querySelectorAll('.nav-dropdown-item').forEach(item => {
+      item.addEventListener('click', () => closeAll());
+    });
+  });
+
+  document.addEventListener('click', (event) => {
+    if (!event.target.closest('.nav-dropdown')) closeAll();
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeAll();
   });
 }
 
@@ -478,15 +524,18 @@ function initScrollReveal() {
  */
 function initNavHighlight() {
   const sections = document.querySelectorAll('section[id]');
-  const navLinks = document.querySelectorAll('.nav-link[href^="#"]');
+  const navLinks = document.querySelectorAll('.nav-link[href^="#"], .nav-dropdown-item[href*="#"]');
   if (!sections.length || !navLinks.length) return;
 
   function setActive(id) {
     navLinks.forEach(link => {
-      if (link.getAttribute('href') === `#${id}`) {
-        link.classList.add('active');
-      } else {
-        link.classList.remove('active');
+      const href = link.getAttribute('href') || '';
+      link.classList.toggle('active', href === `#${id}` || href.endsWith(`#${id}`));
+    });
+    document.querySelectorAll('.nav-dropdown').forEach(dropdown => {
+      const toggle = dropdown.querySelector('.nav-dropdown-toggle');
+      if (toggle) {
+        toggle.classList.toggle('active', !!dropdown.querySelector('.nav-dropdown-item.active'));
       }
     });
   }
