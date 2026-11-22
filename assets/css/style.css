@@ -520,12 +520,14 @@ button {
     pointer-events: auto;
     display: none;
     min-width: 0;
-    background: transparent;
-    border: 0;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
     box-shadow: none;
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
-    padding: 0 0 0.5rem 1rem;
+    padding: 0.5rem;
+    margin-top: 0.35rem;
   }
 
   .nav-dropdown.open .nav-dropdown-menu {
@@ -609,10 +611,10 @@ button {
 
 /* --- Hero Section --- */
 .hero-section {
-  padding: 2.5rem 0 0;
-  min-height: calc(100svh - 70px);
+  padding: 3rem 0 4rem;
+  min-height: auto;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
 }
 
 .hero-grid {
@@ -2523,6 +2525,9 @@ html.js .secondary-skills-row.is-visible .skill-badge {
     padding: 2rem 1.5rem;
     gap: 1.25rem;
     align-items: flex-start;
+    max-height: calc(100dvh - 70px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
     transform: translateY(-120%);
     opacity: 0;
     pointer-events: none;
@@ -2531,6 +2536,7 @@ html.js .secondary-skills-row.is-visible .skill-badge {
 
   .navbar.scrolled .nav-menu {
     top: 58px;
+    max-height: calc(100dvh - 58px);
   }
 
   .nav-menu.open {
