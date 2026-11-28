@@ -42,7 +42,7 @@ function formatDate(iso: string): string {
 }
 
 function truncate140(text: string): string {
-  const t = text.trim();
+  const t = (text || '').trim();
   return t.length > 140 ? `${t.substring(0, 137).trim()}...` : t;
 }
 

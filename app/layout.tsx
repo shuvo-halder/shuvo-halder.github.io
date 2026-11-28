@@ -34,7 +34,11 @@ export const metadata: Metadata = {
     ],
     apple: 'https://shuvo-halder.github.io/apple-touch-icon.png',
   },
-  manifest: 'https://shuvo-halder.github.io/site.webmanifest',
+  // Served locally from /public so the browser never fetches the manifest
+  // cross-origin from github.io (GitHub Pages answers
+  // Access-Control-Allow-Origin: * and the fetch uses credentials, which
+  // Chrome blocks — that was the CORS error in the login-page console).
+  manifest: '/site.webmanifest',
   openGraph: {
     type: 'website',
     siteName: 'Shuvo Halder Portfolio',

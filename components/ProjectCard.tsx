@@ -56,7 +56,10 @@ export function FolderIcon() {
 }
 
 export default function ProjectCard({ project, delay }: { project: ProjectItem; delay: number }) {
-  const isPrivate = Boolean(project.badge);
+  // Private is decided by category, not by the badge field: the DB was
+  // seeded with a script that stripped badge/langDot, so a missing badge
+  // must not turn a private card into an open-source one.
+  const isPrivate = project.category === 'Production & Private Systems' || Boolean(project.badge);
   return (
     <article className={`project-card reveal-item delay-${delay}`}>
       <div className="project-top">
@@ -64,7 +67,7 @@ export default function ProjectCard({ project, delay }: { project: ProjectItem; 
         {isPrivate ? (
           <span className="project-private-badge">
             <LockIcon />
-            {project.badge}
+            {project.badge || 'Private'}
           </span>
         ) : (
           project.githubUrl && (
