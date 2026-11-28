@@ -59,6 +59,7 @@ const models = {
     name: String, role: String, tagline: String, bio: String, bio2: String,
     email: String, phone: String, whatsapp: String, location: String,
     github: String, linkedin: String, devto: String, fiverr: String,
+    imageUrl: String, resumeUrl: String,
     heroRoles: [String],
   }, base)),
   Skill: mongoose.model('Skill', new mongoose.Schema({
@@ -69,7 +70,8 @@ const models = {
   }, base)),
   Project: mongoose.model('Project', new mongoose.Schema({
     title: String, slug: String, description: String, tech: [String],
-    githubUrl: String, category: String, order: Number, published: Boolean,
+    githubUrl: String, category: String, badge: String, langDot: String,
+    order: Number, published: Boolean,
   }, base)),
   Service: mongoose.model('Service', new mongoose.Schema({
     title: String, slug: String, description: String, tech: [String],
