@@ -45,9 +45,12 @@ export async function getContent(): Promise<SiteContent> {
       ]);
     // Empty DB (not seeded yet) -> seed fallback.
     if (!profile && skills.length === 0 && services.length === 0) return seedContent;
+    // Merge the DB profile over the seed profile so a profile document
+    // seeded from an older seed (missing newer fields like imageUrl or
+    // resumeUrl) can never crash a page that reads them.
     return {
       profile: profile
-        ? (plain([profile])[0] as SiteContent['profile'])
+        ? { ...seedContent.profile, ...(plain([profile])[0] as SiteContent['profile']) }
         : seedContent.profile,
       skills: skills.length ? sortByOrder(plain(skills) as SiteContent['skills']) : seedContent.skills,
       experience: experience.length

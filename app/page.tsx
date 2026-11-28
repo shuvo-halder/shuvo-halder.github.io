@@ -63,7 +63,8 @@ export default async function HomePage() {
   const secondarySkills = content.skills.find((g) => g.title === 'Programming & Web');
 
   const resumeUrl = p.resumeUrl || 'https://shuvo-halder.github.io/assets/resume.pdf';
-  const webpUrl = p.imageUrl.replace(/\.png$/, '.webp');
+  const imageUrl = p.imageUrl || 'https://shuvo-halder.github.io/assets/images/shuvo-halder.png';
+  const webpUrl = imageUrl.replace(/\.png$/, '.webp');
 
   return (
     <>
@@ -82,7 +83,7 @@ export default async function HomePage() {
 
             <div className="hero-role-wrapper">
               <span className="brand-prompt">&gt;</span>
-              <RoleTyper roles={p.heroRoles.length ? p.heroRoles : [p.role]} />
+              <RoleTyper roles={p.heroRoles?.length ? p.heroRoles : [p.role]} />
             </div>
 
             <p className="hero-statement">{p.tagline}</p>
@@ -149,7 +150,7 @@ export default async function HomePage() {
             </div>
           </div>
 
-          <HeroPhoto imageUrl={p.imageUrl} webpUrl={webpUrl} />
+          <HeroPhoto imageUrl={imageUrl} webpUrl={webpUrl} />
         </div>
       </section>
 
