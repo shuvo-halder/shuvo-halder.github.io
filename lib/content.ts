@@ -85,6 +85,11 @@ export async function getArticles() {
     if (!res.ok) throw new Error(`dev.to ${res.status}`);
     const data = await res.json();
     if (!Array.isArray(data) || data.length === 0) throw new Error('empty dev.to response');
+    // Newest first, like the static site's main.js.
+    data.sort(
+      (a: Record<string, unknown>, b: Record<string, unknown>) =>
+        new Date(String(b.published_at || 0)).getTime() - new Date(String(a.published_at || 0)).getTime(),
+    );
     return data.map((a: Record<string, unknown>, i: number) => ({
       title: String(a.title || ''),
       url: String(a.url || ''),
@@ -92,6 +97,7 @@ export async function getArticles() {
       publishedAt: String(a.published_at || '').slice(0, 10),
       description: String(a.description || ''),
       tags: Array.isArray(a.tag_list) ? (a.tag_list as string[]) : [],
+      readingTimeMinutes: Number(a.reading_time_minutes || 1),
       order: i + 1,
       published: true,
     }));

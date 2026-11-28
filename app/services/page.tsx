@@ -1,5 +1,4 @@
 import type { Metadata } from 'next';
-import Image from 'next/image';
 import Link from 'next/link';
 import { getContent } from '../../lib/content';
 import { SITE_URL } from '../../lib/seed-data';
@@ -18,12 +17,21 @@ export const metadata: Metadata = {
       'Fixed-price DevOps & cloud services from $40: Linux hardening, Docker & Kubernetes, Proxmox/OpenStack, NGINX & SSL, CI/CD, monitoring, networking & email servers.',
     url: `${SITE_URL}/services`,
     type: 'website',
+    images: [
+      {
+        url: 'https://shuvo-halder.github.io/assets/images/og-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'Shuvo Halder Portfolio',
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'DevOps & Cloud Services | Shuvo Halder - Hire from $40',
     description:
       'Fixed-price DevOps & cloud services from $40: Linux hardening, Docker & Kubernetes, Proxmox/OpenStack, NGINX & SSL, CI/CD, monitoring, networking & email servers.',
+    images: ['https://shuvo-halder.github.io/assets/images/og-image.png'],
   },
 };
 
@@ -31,8 +39,10 @@ function ServiceCard({ service, profile }: { service: ServiceItem; profile: { em
   return (
     <article className="project-card">
       {service.imageUrl && (
-        <Image
-          className="project-image"
+        // Plain <img> exactly like the static site's services.html.
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          className="project-image service-image"
           src={service.imageUrl}
           alt={`${service.title} service by Shuvo Halder`}
           width={1054}
@@ -58,31 +68,38 @@ function ServiceCard({ service, profile }: { service: ServiceItem; profile: { em
           </li>
         ))}
       </ul>
-      <ul className="tier-list">
-        {service.tiers.map((tier) => (
-          <li key={tier.name}>
-            <span>
-              <strong>{tier.name}:</strong> ${tier.price} · {tier.deliveryDays} days
-              {tier.label ? ` — ${tier.label}` : ''}
+      {/* Tier line in the static site's format — no invented tier labels here
+          (labels live only on the /services/[slug] detail page). */}
+      <div className="project-card-footer" style={{ display: 'block' }}>
+        <p className="project-description">
+          {service.tiers.map((tier, i) => (
+            <span key={tier.name}>
+              {i > 0 && <>&nbsp;|&nbsp;</>}
+              <strong>{tier.name}:</strong> ${tier.price}
             </span>
-            <span className="tier-price">${tier.price}</span>
-          </li>
-        ))}
-      </ul>
-      <div className="project-card-footer">
+          ))}
+          <br />
+          <span>
+            Delivery: {service.tiers.map((t) => t.deliveryDays).join(' / ')} days (
+            {service.tiers.map((t) => t.name).join(' / ')})
+          </span>
+        </p>
         <a
           href={`mailto:${profile.email}?subject=${encodeURIComponent(`Service inquiry: ${service.title}`)}`}
           className="project-link-cta"
         >
-          Order this service →
-        </a>
+          Order this service <span aria-hidden="true">&rarr;</span>
+        </a>{' '}
         <a href={profile.whatsapp} target="_blank" rel="noopener noreferrer" className="project-link-cta">
-          WhatsApp →
+          WhatsApp <span aria-hidden="true">&rarr;</span>
         </a>
         {service.fiverrUrl && (
-          <a href={service.fiverrUrl} target="_blank" rel="noopener noreferrer" className="project-link-cta">
-            Fiverr →
-          </a>
+          <>
+            {' '}
+            <a href={service.fiverrUrl} target="_blank" rel="noopener noreferrer" className="project-link-cta">
+              Fiverr <span aria-hidden="true">&rarr;</span>
+            </a>
+          </>
         )}
       </div>
     </article>
@@ -142,29 +159,29 @@ export default async function ServicesPage() {
 
       <section id="services" className="section" aria-labelledby="services-heading">
         <div className="container">
-          <header className="section-header">
+          <header className="section-header reveal-item">
             <span className="section-tag">// services</span>
-            <h1 id="services-heading" className="section-title">
+            <h2 id="services-heading" className="section-title">
               Services
-            </h1>
+            </h2>
             <p className="section-subtitle">
               DevOps and cloud infrastructure services for startups and small businesses: pick a
-              service, pick a package, and get production-grade infrastructure work — fixed scope,
+              service, pick a package, and get production-grade infrastructure work - fixed scope,
               fixed price, no surprises.
             </p>
             <p className="section-subtitle">
               Every gig is delivered by a{' '}
               <Link href="/#about">RHCSA and CCNA certified engineer</Link> with 3+ years of
-              hands-on production experience — see <Link href="/#projects">past projects</Link>{' '}
+              hands-on production experience - see <Link href="/#projects">past projects</Link>{' '}
               and <Link href="/#experience">work experience</Link> before you order. Prices start
               from ${minPrice}.
             </p>
           </header>
           <p className="section-subtitle">
-            How it works: 1) choose a gig below → 2) email or WhatsApp me with your requirements
-            → 3) get a confirmed price and delivery date before any work starts.
+            How it works: 1) choose a gig below &rarr; 2) email or WhatsApp me with your
+            requirements &rarr; 3) get a confirmed price and delivery date before any work starts.
           </p>
-          <div className="projects-grid" style={{ marginTop: '1.5rem' }}>
+          <div className="projects-grid">
             {services.map((service) => (
               <ServiceCard key={service.slug} service={service} profile={p} />
             ))}
@@ -174,19 +191,19 @@ export default async function ServicesPage() {
 
       <section id="faq" className="section" aria-labelledby="faq-heading">
         <div className="container">
-          <header className="section-header">
+          <header className="section-header reveal-item">
             <span className="section-tag">// faq</span>
             <h2 id="faq-heading" className="section-title">
               Frequently Asked Questions
             </h2>
             <p className="section-subtitle">
-              Answers before you order — anything else, just ask on Email or WhatsApp.
+              Answers before you order - anything else, just ask on Email or WhatsApp.
             </p>
           </header>
           <div className="projects-grid">
             {faqs.map((faq) => (
-              <article key={faq.question} className="faq-item">
-                <h3>{faq.question}</h3>
+              <article key={faq.question} className="project-card reveal-item">
+                <h3 className="project-title">{faq.question}</h3>
                 <p className="project-description">{faq.answer}</p>
               </article>
             ))}
@@ -196,21 +213,33 @@ export default async function ServicesPage() {
 
       <section id="order" className="section" aria-labelledby="order-heading">
         <div className="container">
-          <div className="contact-wrapper">
+          <div className="contact-wrapper reveal-item">
             <div className="contact-prompt">// custom project?</div>
-            <h2 id="order-heading" className="section-title">
+            <h2 id="order-heading" className="contact-heading">
               Need Something Custom?
             </h2>
-            <p className="section-subtitle">
-              Not on the list? Tell me what your infrastructure needs — a full private cloud, a
-              migration, or ongoing server management — and I will scope it for you.
+            <p className="contact-text">
+              Not on the list? Tell me what your infrastructure needs - a full private cloud, a
+              migration, or ongoing server management - and I will scope it for you.
             </p>
             <div className="contact-actions">
-              <a href={`mailto:${p.email}?subject=Custom project inquiry`} className="btn btn-primary">
-                $ mail {p.email}
+              <a
+                href={`mailto:${p.email}?subject=Custom%20project%20inquiry`}
+                className="btn btn-primary btn-mail-command"
+                aria-label={`Send email to ${p.email}`}
+              >
+                <span className="term-prompt-sym">$</span>
+                <span className="cmd-name">mail</span>
+                <span className="cmd-arg">{p.email}</span>
               </a>
-              <a href={p.whatsapp} target="_blank" rel="noopener noreferrer" className="btn btn-secondary">
-                WhatsApp {p.phone}
+              <a
+                href={p.whatsapp}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn btn-primary"
+                aria-label="WhatsApp Shuvo Halder"
+              >
+                WhatsApp +880 1710-634144
               </a>
             </div>
           </div>

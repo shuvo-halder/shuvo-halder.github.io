@@ -18,6 +18,7 @@ export interface Profile {
   devto: string;
   fiverr: string;
   imageUrl: string;
+  resumeUrl: string;
   heroRoles: string[];
 }
 
@@ -45,6 +46,10 @@ export interface ProjectItem {
   tech: string[];
   githubUrl: string;
   category: string;
+  /** Badge shown on the card top-right, e.g. 'Private Infrastructure' (private systems only). */
+  badge?: string;
+  /** Language dot color class from the static site: 'python' | 'shell' | 'js' | 'infra'. */
+  langDot?: string;
   order: number;
   published: boolean;
 }
@@ -92,6 +97,7 @@ export interface ArticleItem {
   publishedAt: string;
   description: string;
   tags: string[];
+  readingTimeMinutes?: number;
   order: number;
   published: boolean;
 }

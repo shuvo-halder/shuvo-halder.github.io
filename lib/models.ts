@@ -31,6 +31,7 @@ const profileSchema = new Schema(
     devto: String,
     fiverr: String,
     imageUrl: String,
+    resumeUrl: String,
     heroRoles: { type: [String], default: [] },
   },
   baseOpts
@@ -67,6 +68,8 @@ const projectSchema = new Schema(
     tech: { type: [String], default: [] },
     githubUrl: String,
     category: String,
+    badge: String,
+    langDot: String,
     order: { type: Number, default: 0 },
     published: { type: Boolean, default: true },
   },
