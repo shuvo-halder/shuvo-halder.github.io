@@ -1,125 +1,157 @@
-# Shuvo Halder - Professional Portfolio
+# Shuvo Halder — Dynamic Portfolio (Next.js)
 
-Modern, lightweight, zero-dependency one-page portfolio website for **Shuvo Halder** (System &amp; Cloud Infrastructure Engineer | DevOps).
+A dynamic, SEO-friendly portfolio for **Shuvo Halder, System & Cloud Infrastructure
+Engineer (Dhaka, Bangladesh)**, built with **Next.js 14 (App Router, TypeScript)** and
+**MongoDB Atlas + Mongoose**. It reuses the design of the static site at
+https://shuvo-halder.github.io/ — dark theme (`#0a0e17`, cyan `#06b6d4` accent),
+light-theme toggle, mono `//section` tags, terminal-style brand `shuvo@infra:~$`,
+grouped header nav with dropdowns (desktop) and accordion (mobile) — but all
+content now lives in the database and is editable from an **admin panel with real
+JWT authentication**.
 
-Live URL: [https://shuvo-halder.github.io/](https://shuvo-halder.github.io/)
+## Features
 
----
+- **Public site** — `/` (hero, about, skills, experience, projects, articles,
+  certifications, education, contact form), `/services` (8 gig cards with prices,
+  Fiverr links, FAQ), `/services/[slug]` (one page per service).
+- **Content from MongoDB** — every section renders from the database. If the DB
+  is empty or unreachable, the site falls back to the built-in seed data, so it
+  always renders.
+- **Contact form** — saves messages to MongoDB; read them in the admin inbox.
+- **Dev.to articles** — fetched live from the Dev.to API (`shuvo_h`), cached 1h,
+  with seed fallback.
+- **SEO** — per-page metadata + `generateMetadata`, `sitemap.ts`, `robots.ts`
+  (admin/API disallowed), canonical URLs, Open Graph/Twitter cards, JSON-LD
+  (Person, Service catalog with prices, FAQPage, BreadcrumbList).
+- **Admin panel** — `/admin` dashboard + CRUD for profile, skills, experience,
+  projects, services (incl. pricing tiers), education, certifications, articles,
+  FAQs, and the message inbox. All saves go to MongoDB via `/api/admin/*`.
+- **Admin auth (real, not a demo)** — login at `/admin/login`. The admin account
+  is created by the seed script with a **bcrypt-hashed** password from env vars.
+  Login issues a signed JWT (`jose`, HS256) in an `httpOnly`, `secure` (in
+  production), `sameSite=strict` cookie. `middleware.ts` protects `/admin/*`
+  (except login) and `/api/admin/*`. No default password, no hardcoded
+  credentials anywhere.
+- **Public API** — `GET /api/content` returns all published content as JSON.
 
-## Architecture & Features
+## Tech stack
 
-- **Pure Static Stack**: Pure HTML5, CSS3, and Vanilla JavaScript. No node_modules, no npm build step, zero frameworks required. Served directly from the root of the repository by GitHub Pages.
-- **Dark & Light Modes**: Technical dark theme by default with clean light theme toggle, saved in `localStorage` and synchronized with `prefers-color-scheme`.
-- **Fast & Responsive**: Mobile-first design, accessible hamburger drawer, sticky glassmorphic navigation bar, and responsive typography.
-- **Micro-Interactions**: Dynamic terminal typing effect, smooth-scrolling anchors, and scroll-reveal animations via `IntersectionObserver`.
-- **Accessibility & SEO**: Semantic HTML5 structure, proper `:focus-visible` states, full `prefers-reduced-motion` compliance, Open Graph tags, Twitter card tags, and JSON-LD `Person` schema.
+| Layer | Choice | Why |
+|---|---|---|
+| Framework | Next.js 14 App Router, TypeScript, plain CSS | Same design, no Tailwind/UI kit; server components + SEO built in |
+| Database | **MongoDB Atlas (free M0) + Mongoose** | Flexible document schema fits portfolio content (projects, services, tiers, messages); generous free tier; works on Vercel/Netlify serverless (connection cached in `lib/db.ts`) |
+| Auth | bcryptjs + jose (JWT in httpOnly cookie) | Real password hashing, signed tokens, no sessions to store |
+| Hosting | Vercel (recommended) or Netlify | Both run Next.js server-side; see deploy steps below |
 
----
-
-## Directory Structure
-
-```text
-shuvo-halder.github.io/
-├── .nojekyll                   # Disables Jekyll processing on GitHub Pages
-├── 404.html                    # Themed 404 error page (with noindex)
-├── apple-touch-icon.png        # 180x180 Apple touch icon
-├── favicon.svg                 # Scalable SVG terminal icon
-├── favicon-32x32.png           # 32x32 PNG favicon
-├── favicon-16x16.png           # 16x16 PNG favicon
-├── index.html                  # Main one-page portfolio
-├── README.md                   # Documentation & setup guide
-├── robots.txt                  # Search engine crawl directives
-├── sitemap.xml                 # XML sitemap with canonical URL
-├── site.webmanifest            # PWA/browser web app manifest
-├── LICENSE                     # License file
-└── assets/
-    ├── css/
-    │   └── style.css           # Modular stylesheet with CSS variables
-    ├── js/
-    │   └── main.js             # Theme switcher, typing effect, mobile nav, animations
-    └── images/
-        ├── og-image.png        # 1200x630 Open Graph & Twitter social card
-        ├── placeholder-avatar.svg # Vector avatar fallback
-        ├── shuvo-halder.webp   # Optimized WebP hero portrait (12 KB)
-        └── shuvo-halder.png    # Original lossless PNG portrait fallback
-```
-
----
-
-## Local Development & Preview
-
-Run a local server with Python 3:
+## Run locally
 
 ```bash
-python -m http.server 8000
+npm install
+cp .env.example .env   # fill in MONGODB_URI, JWT_SECRET, ADMIN_EMAIL, ADMIN_PASSWORD
+npm run seed           # creates the admin + fills MongoDB with the real content
+npm run dev            # http://localhost:3000
 ```
 
-Open [http://localhost:8000](http://localhost:8000) in your web browser.
+Without `MONGODB_URI` the site still runs — it renders the seed fallback data.
+The contact form and admin panel need the database.
 
----
+## Environment variables
 
-## Deployment to GitHub Pages
+| Variable | Required | Notes |
+|---|---|---|
+| `NEXT_PUBLIC_SITE_URL` | yes | Public base URL, no trailing slash (e.g. `https://shuvo-halder.vercel.app`) |
+| `JWT_SECRET` | yes | Min 32 chars. Generate: `node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"` |
+| `MONGODB_URI` | yes | Atlas connection string, incl. database name (`.../portfolio?...`) |
+| `ADMIN_EMAIL` | yes | Admin login email |
+| `ADMIN_PASSWORD` | yes | Admin login password (hashed by seed; never stored plaintext) |
 
-1. **Stage, Commit, and Push**:
+## MongoDB Atlas setup (free M0)
+
+1. Create a free cluster at https://cloud.mongodb.com (M0, any region).
+2. **Database Access** → Add a database user (username + strong password).
+3. **Network Access** → Add IP `0.0.0.0/0` (required for Vercel/Netlify serverless;
+   restrict later if you use a fixed egress IP).
+4. **Clusters → Connect → Drivers** → copy the connection string, replace
+   `<password>` and the database name with `portfolio`.
+5. Paste it as `MONGODB_URI` in `.env` and in the hosting provider's env vars.
+
+## Seed the database
+
+```bash
+npm run seed
+```
+
+This (a) generates `scripts/seed-data.json` from `lib/seed-data.ts` (the single
+source of truth), (b) replaces all content collections with the real content
+(8 services with approved prices, 6 projects, 3 jobs, 5 skill groups, 4
+certifications, 2 education entries, 7 Dev.to articles, 5 FAQs), and
+(c) upserts the admin from `ADMIN_EMAIL` / `ADMIN_PASSWORD` (bcrypt hash).
+Re-running it is safe.
+
+Then log in at `http://localhost:3000/admin/login`.
+
+## Deploy — Vercel (recommended)
+
+1. Push this folder to a GitHub repo (new branch, e.g. `nextjs-dynamic`).
+2. https://vercel.com → Add New → Project → import the repo.
+3. Framework preset: **Next.js**. Build command `npm run build` (default).
+4. Environment variables: add `NEXT_PUBLIC_SITE_URL` (your Vercel URL),
+   `JWT_SECRET`, `MONGODB_URI`, `ADMIN_EMAIL`, `ADMIN_PASSWORD`.
+5. Deploy. Then run the seed **once** from your machine:
    ```bash
-   git add .
-   git commit -m "feat: complete modern portfolio with real CV content"
-   git push origin main
+   MONGODB_URI="..." ADMIN_EMAIL="..." ADMIN_PASSWORD="..." npm run seed
    ```
+   (or set the same vars in a local `.env` and run `npm run seed`).
+6. Log in at `https://<your-app>.vercel.app/admin/login`.
 
-2. **GitHub Pages Settings**:
-   - Go to your repository on GitHub: `https://github.com/shuvo-halder/shuvo-halder.github.io`.
-   - Click **Settings** &rarr; **Pages** (in the left sidebar).
-   - Under **Build and deployment**:
-     - **Source**: Select `Deploy from a branch`.
-     - **Branch**: Select `main`, and folder `/ (root)`.
-     - Click **Save**.
-   - Your site will be live at: [https://shuvo-halder.github.io/](https://shuvo-halder.github.io/)
+## Deploy — Netlify
 
----
+1. Push to GitHub, then https://app.netlify.com → Add new site → Import from Git.
+2. Build command `npm run build`, publish directory `.next`.
+3. The repo includes `netlify.toml` which applies the Essential Next.js plugin
+   (`@netlify/plugin-nextjs`).
+4. Site settings → Environment variables: add the same five vars as Vercel.
+5. Deploy, then seed once from your machine (same command as Vercel step 5).
+6. Log in at `https://<your-site>.netlify.app/admin/login`.
 
-## GitHub Pages Architecture: User Site vs. Project Sites
+## Project structure
 
-This repository (`shuvo-halder.github.io`) is a **GitHub Pages User Site**, hosted at the root domain:
-`https://shuvo-halder.github.io/`
+```
+app/
+  layout.tsx            Root layout, fonts, metadata, Person JSON-LD, theme script
+  page.tsx              Home: hero, about, skills, experience, projects,
+                        articles, certifications, education, contact form
+  services/page.tsx     Services list + FAQ + JSON-LD (Service/FAQ/Breadcrumb)
+  services/[slug]/page.tsx  One page per service (generateMetadata + JSON-LD)
+  sitemap.ts  robots.ts
+  api/content/route.ts  Public JSON API
+  api/contact/route.ts  Contact form → MongoDB Message
+  api/admin/login|logout/route.ts
+  api/admin/[collection]/route.ts        Generic admin CRUD (list/create)
+  api/admin/[collection]/[id]/route.ts  Generic admin CRUD (read/update/delete)
+  admin/                Login, dashboard, generic CRUD pages
+components/             Navbar (grouped dropdowns + theme + mobile),
+                        Footer, ContactForm, LogoutButton
+lib/
+  seed-data.ts          Real content (single source of truth + DB fallback)
+  content.ts            getContent() — DB first, seed fallback
+  db.ts                 Cached Mongoose connection (serverless-safe)
+  models.ts             Mongoose models + collection registry
+  auth.ts               JWT sign/verify, bcrypt credential check, cookies
+  admin-config.ts       Admin CRUD field definitions (allow-list for the API)
+  types.ts              Shared TypeScript types
+middleware.ts           Protects /admin/* and /api/admin/* (except login)
+scripts/
+  seed.mjs              Seed script (content + bcrypt-hashed admin)
+  generate-seed-json.mjs  Builds scripts/seed-data.json from lib/seed-data.ts
+```
 
-### 1. Project Sites & Namespace Isolation
-- Any other repository published to GitHub Pages under this account (e.g. `core-panel`, `virtualhost-automation`, `certbot-smart-manager`, `nginx-inspector`, `log-archive-tool`, `performance-stats`) is published as an independent **Project Site** at:
-  `https://shuvo-halder.github.io/<repo-name>/`
-- Project sites are deployed and managed from their own separate repositories. They do **not** inherit or share this root repository's assets, styles, or `404.html`.
+## Notes & limits
 
-### 2. Preventing Path and Routing Conflicts
-- **No Overlapping Top-Level Folders**: This repository must **never** contain a top-level directory matching any of your repository names (e.g., do not create `/core-panel/` or `/virtualhost-automation/` inside this repo). Doing so would cause GitHub Pages routing collisions between a local folder and the standalone project site.
-- **Root-Relative vs. Relative Assets**:
-  - In this root site (`shuvo-halder.github.io`), assets and cross-links use root-relative paths (`/assets/...`, `/#about`, `/`) because it resides at domain root `/`.
-  - In project sites (`shuvo-halder.github.io/<repo-name>/`), project repositories must either use **relative asset paths** (`./assets/...` or `assets/...`) or configure their framework base path to `/<repo-name>/` (e.g. `base: '/<repo-name>/'` in Vite/Astro/Next.js) so asset references resolve to `https://shuvo-halder.github.io/<repo-name>/assets/...` rather than the user site root.
-
-### 3. Global 404 Error Handling
-- The `404.html` in this repository handles unrouted requests at any path depth across the root user site (e.g. `https://shuvo-halder.github.io/non-existent-path`).
-- All scripts, stylesheets, and favicon links in `404.html` are strictly root-relative (`/assets/css/style.css`, `/assets/js/main.js`, `/favicon.svg`), guaranteeing styles, navigation, and theme toggling load accurately at any URL depth without redirect hacks or `<base>` tag conflicts.
-
----
-
-## SEO & Search Engine Indexing
-
-This portfolio is optimized for search engines with pure static files, valid structured data (`Person` and `WebSite` JSON-LD schema), Open Graph and Twitter Card tags, and root crawl directives.
-
-### Submitting to Search Engines
-
-1. **Google Search Console**:
-   - Navigate to [Google Search Console](https://search.google.com/search-console).
-   - Add property: `https://shuvo-halder.github.io/` (URL prefix method is recommended for GitHub Pages).
-   - Verify ownership using the HTML tag or file upload method.
-   - Go to **Sitemaps** in the sidebar, enter `sitemap.xml`, and click **Submit**.
-   - Use the **URL Inspection** tool on `https://shuvo-halder.github.io/` and click **Request Indexing**.
-
-2. **Bing Webmaster Tools**:
-   - Go to [Bing Webmaster Tools](https://www.bing.com/webmasters).
-   - Sign in and either import your verified site from Google Search Console or add `https://shuvo-halder.github.io/` manually.
-   - Go to **Sitemaps**, enter `https://shuvo-halder.github.io/sitemap.xml`, and click **Submit sitemap**.
-
-### Key SEO Directives & Files
-- **Canonical URL**: `https://shuvo-halder.github.io/`
-- **Sitemap**: `https://shuvo-halder.github.io/sitemap.xml`
-- **Robots Directives (`robots.txt`)**: Allows crawling of all public pages and points crawlers directly to `sitemap.xml`.
-- **404 Handling (`404.html`)**: Includes `<meta name="robots" content="noindex">` to prevent error responses from being indexed by search engines.
+- Service images for the two Fiverr gigs are hotlinked from Fiverr's Cloudinary
+  CDN (same as the static site) — if Fiverr changes those URLs, upload the
+  originals to `public/images/` and update the `imageUrl` in the admin panel.
+- Articles are cached from Dev.to for 1 hour; the admin Articles section holds
+  the fallback list shown if Dev.to is unreachable.
+- The static GitHub Pages site is untouched — this app is a separate codebase
+  meant for Vercel/Netlify.

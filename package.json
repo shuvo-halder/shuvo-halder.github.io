@@ -1,0 +1,33 @@
+{
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "jose": "^5.9.6",
+    "mongoose": "^8.9.5",
+    "next": "^14.2.18",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "description": "Dynamic portfolio of Shuvo Halder \u2014 System & Cloud Infrastructure Engineer. Next.js 14, MongoDB Atlas, admin panel with JWT auth.",
+  "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
+    "@types/node": "^22.10.2",
+    "@types/react": "^18.3.17",
+    "@types/react-dom": "^18.3.0",
+    "typescript": "^5.7.2"
+  },
+  "engines": {
+    "node": ">=18.17.0"
+  },
+  "name": "shuvo-halder-portfolio",
+  "private": true,
+  "scripts": {
+    "build": "next build",
+    "dev": "next dev",
+    "lint": "next lint",
+    "seed": "node scripts/seed.mjs",
+    "start": "next start",
+    "typecheck": "tsc --noEmit",
+    "preseed": "node scripts/generate-seed-json.mjs"
+  },
+  "version": "1.0.0"
+}
