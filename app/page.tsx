@@ -29,7 +29,7 @@ const QUICK_FACTS = [
   { label: 'Virtualization', value: 'OpenStack • Proxmox • ESXi' },
   { label: 'Storage & Orchestration', value: 'Ceph + k3s' },
   { label: 'Certification', value: 'RHCSA Certified' },
-  { label: 'Location', value: 'Based in Dhaka, Bangladesh' },
+  { label: 'Location', value: 'Based in Dhaka, Bangladesh · Open to remote work worldwide' },
 ];
 
 const LANGUAGES = ['Bengali (Native)', 'English (Professional Working Proficiency)'];
@@ -604,7 +604,7 @@ export default async function HomePage() {
                   d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
                 />
               </svg>
-              <span>Based in Dhaka, Bangladesh</span>
+              <span>Based in Dhaka, Bangladesh · Open to remote work worldwide</span>
             </div>
 
             <p className="contact-text">
