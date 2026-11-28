@@ -30,6 +30,7 @@ const profileSchema = new Schema(
     linkedin: String,
     devto: String,
     fiverr: String,
+    imageUrl: String,
     heroRoles: { type: [String], default: [] },
   },
   baseOpts

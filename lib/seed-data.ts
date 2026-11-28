@@ -26,6 +26,7 @@ export const seedContent: SiteContent = {
     linkedin: 'https://www.linkedin.com/in/shuvo-halder',
     devto: 'https://dev.to/shuvo_h',
     fiverr: 'https://www.fiverr.com/shuvo_halder',
+    imageUrl: 'https://shuvo-halder.github.io/assets/images/shuvo-halder.png',
     heroRoles: [
       'System & Cloud Infrastructure',
       'DevOps Engineer',

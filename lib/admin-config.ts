@@ -37,6 +37,7 @@ export const ADMIN_COLLECTIONS: AdminCollection[] = [
       { key: 'linkedin', label: 'LinkedIn URL', type: 'url' },
       { key: 'devto', label: 'Dev.to URL', type: 'url' },
       { key: 'fiverr', label: 'Fiverr URL', type: 'url' },
+      { key: 'imageUrl', label: 'Photo URL', type: 'url' },
       { key: 'heroRoles', label: 'Hero rotating roles (one per line)', type: 'list' },
     ],
   },

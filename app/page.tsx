@@ -42,32 +42,26 @@ export default async function HomePage() {
               </Link>
             </div>
           </div>
-          <div className="hero-terminal-window" aria-hidden="true">
-            <div className="term-titlebar">
-              <span className="term-dot red" />
-              <span className="term-dot yellow" />
-              <span className="term-dot green" />
-              <span style={{ marginLeft: '0.5rem' }}>shuvo@infra: ~</span>
+          {p.imageUrl ? (
+            <div className="hero-visual">
+              <div className="avatar-frame">
+                <div className="avatar-backdrop" aria-hidden="true" />
+                <div className="avatar-img-container">
+                  <picture className="avatar-picture">
+                    <source srcSet={p.imageUrl.replace(/\.png$/, '.webp')} type="image/webp" />
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={p.imageUrl}
+                      alt="Shuvo Halder - System & Cloud Infrastructure Engineer"
+                      width={531}
+                      height={652}
+                      className="avatar-img"
+                    />
+                  </picture>
+                </div>
+              </div>
             </div>
-            <div className="term-body">
-              <p>
-                <span className="term-prompt">$</span> whoami
-              </p>
-              <p>shuvo-halder</p>
-              <p>
-                <span className="term-prompt">$</span> cat /etc/os-release
-              </p>
-              <p>RHCSA · CCNA · BSc CSE</p>
-              <p>
-                <span className="term-prompt">$</span> uptime
-              </p>
-              <p>Assistant System Engineer @ Plexus Cloud</p>
-              <p>
-                <span className="term-prompt">$</span> echo $LOCATION
-              </p>
-              <p>Dhaka, Bangladesh</p>
-            </div>
-          </div>
+          ) : null}
         </div>
       </section>
 

@@ -17,6 +17,7 @@ export interface Profile {
   linkedin: string;
   devto: string;
   fiverr: string;
+  imageUrl: string;
   heroRoles: string[];
 }
 
