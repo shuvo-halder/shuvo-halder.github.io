@@ -3234,3 +3234,20 @@ a:hover {
     transition: none !important;
   }
 }
+
+/* Contact: form inside the // 08. let's connect section.
+   Professional two-column layout: connect info left, form card right.
+   Header (prompt + heading) stays centered; grid content is left-aligned. */
+.contact-wrapper { max-width: 1020px; }
+.contact-grid { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 2.5rem; margin-top: 2.25rem; text-align: left; align-items: start; }
+.contact-info .contact-text { margin-left: 0; margin-right: 0; }
+.contact-info .contact-actions { justify-content: flex-start; margin-bottom: 1.75rem; }
+.contact-info .social-links { justify-content: flex-start; }
+.contact-form-card { background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.5rem; }
+.contact-form-head { display: flex; align-items: center; gap: 0.5rem; font-family: var(--font-mono); font-size: 0.9rem; color: var(--accent); padding-bottom: 0.9rem; margin-bottom: 1.25rem; border-bottom: 1px solid var(--border-color); }
+.contact-form-card .form-grid { margin-top: 0; }
+.contact-form-card .form-field input, .contact-form-card .form-field textarea { background: var(--bg-primary); }
+.contact-form-card .contact-actions { margin-bottom: 0; margin-top: 1.25rem; }
+@media (max-width: 899px) {
+  .contact-grid { grid-template-columns: 1fr; gap: 2rem; }
+}

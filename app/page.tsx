@@ -583,7 +583,9 @@ export default async function HomePage() {
               Get In Touch
             </h2>
 
-            <div className="contact-location">
+            <div className="contact-grid">
+              <div className="contact-info">
+                <div className="contact-location">
               <svg
                 fill="none"
                 viewBox="0 0 24 24"
@@ -658,13 +660,19 @@ export default async function HomePage() {
                 </svg>
                 <span>dev.to</span>
               </a>
+              </div>
+            </div>
+
+            <div className="contact-form-card">
+              <div className="contact-form-head">
+                <span className="term-prompt-sym">$</span>
+                <span>new message</span>
+              </div>
+              <ContactForm />
             </div>
           </div>
-
-          {/* Contact form — intentional addition on the dynamic site: messages
-              land in the admin panel inbox. The static site has no form. */}
-          <ContactForm />
         </div>
+      </div>
       </section>
     </>
   );

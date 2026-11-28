@@ -34,7 +34,7 @@ export default function ContactForm() {
   }
 
   return (
-    <form onSubmit={onSubmit}>
+    <form onSubmit={onSubmit} className="contact-form">
       <div className="form-grid">
         <div className="form-field">
           <label htmlFor="cf-name">Name</label>
